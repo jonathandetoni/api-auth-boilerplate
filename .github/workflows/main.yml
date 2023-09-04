@@ -1,0 +1,61 @@
+name: 'Production'
+
+permissions:
+  contents: 'read'
+  id-token: 'write'
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  DATABASE_URL: ${{ vars.DATABASE_URL_MIGRATIONS }}
+  JWT_SECRET: secret
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3`
+
+    - id: 'auth'
+      name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v1
+      with: 
+        credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
+
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+
+    - name: Configure docker for GCP
+      run: gcloud auth configure-docker
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: gcr.io/${{ vars.GCP_PROJECT }}/${{ github.event.repository.name }}:${{ github.sha }}
+
+    - name: Deploy to Cloud Run
+      uses: google-github-actions/deploy-cloudrun@v1
+      with:
+        image: gcr.io/${{ vars.GCP_PROJECT }}/${{ github.event.repository.name }}:${{ github.sha }}
+        service: ${{ github.event.repository.name }}
+        region: ${{ vars.GCP_REGION }}
+        env_vars:
+          DATABASE_URL=${{ vars.DATABASE_URL }}
+    
+    - name: Download SQL Auth Proxy
+      run: "wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy"
+        
+    - name: Make the Cloud SQL Auth proxy executable
+      run: "chmod +x cloud_sql_proxy"
+      
+    - name: Start the Cloud SQL proxy
+      run: "./cloud_sql_proxy -instances=${{ vars.CLOUD_SQL_PROXY_INSTANCES }} & npx prisma migrate deploy"      
+
+    - name: Show Output
+      run: echo ${{ steps.deploy.outputs.url }}

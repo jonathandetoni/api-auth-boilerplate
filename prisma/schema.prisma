@@ -1,0 +1,150 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id String @id @default(uuid()) @db.Uuid @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  email String @db.VarChar(255) @unique
+  password String @db.VarChar(255)
+  cpf String @db.VarChar(11) @unique
+  role String @db.VarChar(50)
+  typeUser TypeUsers @default(COMMON)
+
+  tenant Tenants @relation(fields: [tenantId], references: [id])
+  tenantId String @db.Uuid @unique
+
+  dataBasicUser DataBasicUsers?
+  demands Demands?
+  budgetsSent budgetsSent?
+  comments Comments[]
+
+  @@map("users")
+}
+
+model DataBasicUsers {
+  id String @id @default(uuid()) @db.Uuid @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  fullname String @db.VarChar(255)
+  nickname String? @db.VarChar(255)
+  birthdate DateTime? @db.Date
+
+  addresses Addresses[]
+
+  user Users @relation(fields: [userId], references: [id])
+  userId String @db.Uuid @unique
+
+  @@map("data-basic-users")
+}
+
+model Addresses {
+  id String @id @default(uuid()) @db.Uuid @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  demands Demands[]
+  
+  dataBasicUsers DataBasicUsers @relation(fields: [dataBasicUsersId], references: [id])
+  dataBasicUsersId String @db.Uuid @unique
+}
+
+model Tenants {
+  id String @id @default(uuid()) @db.Uuid @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  name String @db.VarChar(255) @unique
+  description String @db.VarChar(255)
+
+  users Users?
+
+  @@map("tenants")
+}
+
+model budgetsSent {
+  id String @id @default(uuid()) @db.Uuid @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  description String @db.VarChar(255)
+  status StatusBudgets @default(OPEN)
+  value String @db.VarChar(255)
+
+  professional Users @relation(fields: [professionalId], references: [id])
+  professionalId String @db.Uuid @unique
+}
+
+model Demands {
+  id String @id @default(uuid()) @db.Uuid @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String @db.VarChar(255) @unique
+  description String @db.VarChar(255)
+  status StatusDemands @default(NEW)
+  category String @db.VarChar(255)
+  typeService String @db.VarChar(255)
+
+  comments Comments[]
+
+  address Addresses @relation(fields: [addressId], references: [id])
+  addressId String @db.Uuid
+
+  owner Users @relation(fields: [ownerId], references: [id])
+  ownerId String @db.Uuid @unique
+
+  @@map("budgets")
+}
+
+model Comments {
+  id String @id @default(uuid()) @db.Uuid @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  comment String @db.Text()
+  visible Boolean @db.Boolean() @default(true) 
+
+  parentCommentId String? @db.Uuid @unique
+  parentComment Comments? @relation("parentCommentId", fields: [parentCommentId], references: [id])
+  parentCommentPredecessor Comments? @relation("parentCommentId")
+
+  demand Demands @relation(fields: [demandId], references: [id])
+  demandId String @db.Uuid @unique
+
+  ownerComment Users @relation(fields: [ownerCommentId], references: [id])
+  ownerCommentId String @db.Uuid @unique
+  
+  @@map("comments")
+}
+
+enum StatusDemands { 
+  NEW 
+  OPEN_BUDGETS
+  RECEIVED_BUDGETS
+  CHOSEN_BUDGETS
+  FINISHED
+}
+
+enum StatusBudgets {
+  SENT
+  OPEN
+  REFUSED
+  ACCEPTED
+}
+
+enum TypeUsers {
+  COMMON
+  PROFESSIONAL
+  ADMINISTRATOR
+}

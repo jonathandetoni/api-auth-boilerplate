@@ -1,0 +1,44 @@
+version: '3.6'
+services:
+  newprojectx-core-db:
+    container_name: newprojectx-core-db
+    image: postgres:15
+    restart: always
+    environment:
+      - POSTGRES_USER=devuser
+      - POSTGRES_PASSWORD=devpass
+      - POSTGRES_DB=newprojectx-core-db
+    volumes:
+      - newprojectx_postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    networks:
+      - newprojectx_network
+
+  newprojectx-core-api:
+    container_name: newprojectx-core-api
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    ports:
+      - "5001:5001"
+    volumes:
+          - ./src:/app/src:rw
+    environment:
+      - DATABASE_URL=postgresql://devuser:devpass@newprojectx-core-db:5432/newprojectx-core-db?schema=public
+      - JWT_SECRET=secret
+      - NODE_ENV=development
+      - PORT=5001
+    depends_on:
+      - newprojectx-core-db
+    links: 
+      - newprojectx-core-db
+    networks:
+      - newprojectx_network
+
+volumes:
+  newprojectx_postgres_data:
+
+networks:
+  newprojectx_network:
+    driver: bridge
