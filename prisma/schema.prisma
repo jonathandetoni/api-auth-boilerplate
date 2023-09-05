@@ -9,6 +9,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Tenants {
+  id String @id @default(uuid()) @db.Uuid @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  name String @db.VarChar(255) @unique
+  description String @db.VarChar(255)
+
+  users Users?
+
+  @@map("tenants")
+}
+
 model Users {
   id String @id @default(uuid()) @db.Uuid @unique
   createdAt DateTime @default(now())
@@ -25,7 +38,7 @@ model Users {
 
   dataBasicUser DataBasicUsers?
   demands Demands?
-  budgetsSent budgetsSent?
+  budgetsSent BudgetsSent?
   comments Comments[]
 
   @@map("users")
@@ -40,7 +53,8 @@ model DataBasicUsers {
   nickname String? @db.VarChar(255)
   birthdate DateTime? @db.Date
 
-  addresses Addresses[]
+  addresses Adresses[]
+  contacts Contacts[]
 
   user Users @relation(fields: [userId], references: [id])
   userId String @db.Uuid @unique
@@ -48,7 +62,7 @@ model DataBasicUsers {
   @@map("data-basic-users")
 }
 
-model Addresses {
+model Adresses {
   id String @id @default(uuid()) @db.Uuid @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -57,22 +71,25 @@ model Addresses {
   
   dataBasicUsers DataBasicUsers @relation(fields: [dataBasicUsersId], references: [id])
   dataBasicUsersId String @db.Uuid @unique
+
+  @@map("addresses")
 }
 
-model Tenants {
+model Contacts { 
   id String @id @default(uuid()) @db.Uuid @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
-  name String @db.VarChar(255) @unique
-  description String @db.VarChar(255)
 
-  users Users?
+  contactType ContactsTypes
+  value String @db.VarChar(255)
 
-  @@map("tenants")
+  dataBasicUsers DataBasicUsers @relation(fields: [dataBasicUsersId], references: [id])
+  dataBasicUsersId String @db.Uuid @unique
+
+  @@map("contacts")
 }
 
-model budgetsSent {
+model BudgetsSent {
   id String @id @default(uuid()) @db.Uuid @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -83,6 +100,8 @@ model budgetsSent {
 
   professional Users @relation(fields: [professionalId], references: [id])
   professionalId String @db.Uuid @unique
+
+  @@map("budgets-sent")
 }
 
 model Demands {
@@ -98,7 +117,7 @@ model Demands {
 
   comments Comments[]
 
-  address Addresses @relation(fields: [addressId], references: [id])
+  address Adresses @relation(fields: [addressId], references: [id])
   addressId String @db.Uuid
 
   owner Users @relation(fields: [ownerId], references: [id])
@@ -147,4 +166,14 @@ enum TypeUsers {
   COMMON
   PROFESSIONAL
   ADMINISTRATOR
+}
+
+enum ContactsTypes {
+  PHONE_NUMBER
+  CELPHONE_NUMBER
+  EMAIL
+  APP_WHATSAPP
+  MIDIASOCIAL_FACEBOOK
+  MIDIASOCIAL_INTAGRAM
+  OTHER
 }
