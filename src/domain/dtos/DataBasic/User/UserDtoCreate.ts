@@ -1,4 +1,4 @@
-import { TypeUser } from "../../../../infrastrutucture/utils/constants/typesUser";
+import { TypeUser } from "../../../../infrastructure/utils/constants/typesUser";
 import { DataBasicUsersDtoCreate } from "../DataBasicUsers/DataBasicUsersDtoCreate";
 
 export type UserDtoCreate = {

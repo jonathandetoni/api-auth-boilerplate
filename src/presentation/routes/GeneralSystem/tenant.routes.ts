@@ -3,7 +3,7 @@ import { TenantRepository } from '../../../domain/repositories/GeneralSystem/Ten
 import { TenantService } from '../../../service/GeneralSystem/TenantService';
 import { TenantController } from '../../controllers/GeneralSystem/TenantController';
 import { TenantDtoCreate } from '../../../domain/dtos/GeneralSystem/Tenant/TenantDtoCreate';
-import { validationToken } from '../../../infrastrutucture/utils/middleware/authHelper';
+import { validationToken } from '../../../infrastructure/utils/middleware/authHelper';
 
 const tenantRouter = Router();
 

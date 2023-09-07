@@ -3,7 +3,7 @@ import { UserDtoCreate } from '../../../domain/dtos/DataBasic/User/UserDtoCreate
 import { UserRepository } from '../../../domain/repositories/DataBasic/UserRepository';
 import { UserService } from '../../../service/DataBasic/UserService';
 import { UserController } from '../../controllers/DataBasic/UserController';
-import { validationToken } from '../../../infrastrutucture/utils/middleware/authHelper';
+import { validationToken } from '../../../infrastructure/utils/middleware/authHelper';
 
 const userRouter = Router();
 const userRepository = new UserRepository();

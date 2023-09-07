@@ -1,4 +1,4 @@
-import { getEnv } from "../../../config/env";
+import { getEnv } from "../../config/env";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type optionsPramsType = any[];

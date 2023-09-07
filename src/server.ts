@@ -2,7 +2,7 @@ import express from 'express';
 import { router } from './presentation/routes/index';
 import cors from 'cors';
 import 'express-async-errors';
-import { getEnv } from './config/env';
+import { getEnv } from './infrastructure/config/env';
 
 const app = express();
 const port = getEnv().PORT ?? 8080; 

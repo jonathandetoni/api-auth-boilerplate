@@ -2,9 +2,9 @@ import { AuthDto, AuthDtoResult } from "../../domain/dtos/GeneralSystem/Auth/Aut
 import { TenantDtoList } from "../../domain/dtos/GeneralSystem/Tenant/TenantDtoList";
 import { IUserRepository } from "../../domain/interfaces/repository/DataBasic/IUserRepository";
 import { IAuthService } from "../../domain/interfaces/service/GeneralSystem/IAuthService";
-import { TypeUser } from "../../infrastrutucture/utils/constants/typesUser";
-import { Logger } from "../../infrastrutucture/utils/log/logger";
-import { comparePasswords, jwtSign } from "../../infrastrutucture/utils/middleware/authHelper";
+import { TypeUser } from "../../infrastructure/utils/constants/typesUser";
+import { Logger } from "../../infrastructure/utils/log/logger";
+import { comparePasswords, jwtSign } from "../../infrastructure/utils/middleware/authHelper";
 
 
 export interface IAuthResult {

@@ -1,4 +1,4 @@
-import { TypeUser } from "../../../../infrastrutucture/utils/constants/typesUser";
+import { TypeUser } from "../../../../infrastructure/utils/constants/typesUser";
 import { TenantDtoList } from "../../GeneralSystem/Tenant/TenantDtoList";
 
 export type UserDtoList = {

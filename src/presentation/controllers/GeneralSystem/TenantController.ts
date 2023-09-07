@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { statusCode } from '../../../infrastrutucture/utils';
-import { Logger } from '../../../infrastrutucture/utils/log/logger';
+import { statusCode } from '../../../infrastructure/utils';
+import { Logger } from '../../../infrastructure/utils/log/logger';
 import { ITenantService } from '../../../domain/interfaces/service/GeneralSystem/ITenantService';
 import { TenantDtoCreate } from '../../../domain/dtos/GeneralSystem/Tenant/TenantDtoCreate';
 

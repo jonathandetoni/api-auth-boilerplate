@@ -1,5 +1,5 @@
-import { prismaClient } from '../../../infrastrutucture/config/database/prismaClient';
-import { Logger } from '../../../infrastrutucture/utils/log/logger';
+import { prismaClient } from '../../../infrastructure/config/database/prismaClient';
+import { Logger } from '../../../infrastructure/utils/log/logger';
 import { ITenantRepository } from '../../interfaces/repository/GeneralSystem/ITenantRepository';
 import { TenantDtoCreate } from '../../dtos/GeneralSystem/Tenant/TenantDtoCreate';
 import { TenantDtoList } from '../../dtos/GeneralSystem/Tenant/TenantDtoList';

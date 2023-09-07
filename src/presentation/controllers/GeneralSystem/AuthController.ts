@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { IAuthService } from '../../../domain/interfaces/service/GeneralSystem/IAuthService';
-import { statusCode } from '../../../infrastrutucture/utils';
-import { Logger } from '../../../infrastrutucture/utils/log/logger';
+import { statusCode } from '../../../infrastructure/utils';
+import { Logger } from '../../../infrastructure/utils/log/logger';
 import { AuthDto } from '../../../domain/dtos/GeneralSystem/Auth/AuthDto';
 
 class AuthController {

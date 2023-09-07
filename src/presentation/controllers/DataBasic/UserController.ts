@@ -1,8 +1,8 @@
 import { Request, Response, response } from 'express';
 import { UserDtoCreate } from '../../../domain/dtos/DataBasic/User/UserDtoCreate';
 import { IUserService } from '../../../domain/interfaces/service/DataBasic/IUserService';
-import { statusCode } from '../../../infrastrutucture/utils';
-import { Logger } from '../../../infrastrutucture/utils/log/logger';
+import { statusCode } from '../../../infrastructure/utils';
+import { Logger } from '../../../infrastructure/utils/log/logger';
 
 class UserController {
     private readonly _service: IUserService;

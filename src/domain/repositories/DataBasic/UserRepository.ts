@@ -1,11 +1,11 @@
-import { prismaClient } from '../../../infrastrutucture/config/database/prismaClient';
-import { Logger } from '../../../infrastrutucture/utils/log/logger';
+import { prismaClient } from '../../../infrastructure/config/database/prismaClient';
+import { Logger } from '../../../infrastructure/utils/log/logger';
 import { Prisma } from '@prisma/client';
 import { IUserRepository } from '../../interfaces/repository/DataBasic/IUserRepository';
 import { UserDtoList } from '../../dtos/DataBasic/User/UserDtoList';
 import { UserDtoCreate } from '../../dtos/DataBasic/User/UserDtoCreate';
 import { UserDtoCreateResult } from '../../dtos/DataBasic/User/result/UserDtoCreateResult';
-import { hashPassword } from '../../../infrastrutucture/utils/middleware/authHelper';
+import { hashPassword } from '../../../infrastructure/utils/middleware/authHelper';
 
 class UserRepository implements IUserRepository {
     async create(entity: UserDtoCreate): Promise<UserDtoCreateResult> {
