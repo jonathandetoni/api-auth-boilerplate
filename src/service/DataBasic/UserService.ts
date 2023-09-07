@@ -1,8 +1,10 @@
 import { UserDtoCreate } from "../../domain/dtos/DataBasic/User/UserDtoCreate";
 import { UserDtoList } from "../../domain/dtos/DataBasic/User/UserDtoList";
 import { UserDtoCreateResult } from "../../domain/dtos/DataBasic/User/result/UserDtoCreateResult";
+import { TenantDtoList } from "../../domain/dtos/GeneralSystem/Tenant/TenantDtoList";
 import { IUserRepository } from "../../domain/interfaces/repository/DataBasic/IUserRepository";
 import { IUserService } from "../../domain/interfaces/service/DataBasic/IUserService";
+import { TypeUser } from "../../infrastrutucture/utils/constants/typesUser";
 import { jwtDecode } from "../../infrastrutucture/utils/middleware/authHelper";
 
 export interface IUserResult {
@@ -10,8 +12,9 @@ export interface IUserResult {
     id: string;
     email: string;
     cpf: string;
-    tenantId: string;
+    tenant: TenantDtoList;
     role: string;
+    typeUser: TypeUser
   }
 }
 
@@ -31,8 +34,9 @@ class UserService implements IUserService {
         id: user.id,
         email: user.email,
         cpf: user.cpf,
-        tenantId: user.tenantId,
+        tenant: user.tenant,
         role: user.role,
+        typeUser: user.typeUser
       }
     }
 

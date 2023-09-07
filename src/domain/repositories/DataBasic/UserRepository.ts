@@ -111,7 +111,10 @@ class UserRepository implements IUserRepository {
                     updatedAt: true,
                     cpf: true,
                     email: true,
-                    password: true
+                    password: true,
+                    role: true,
+                    tenant: true,
+                    typeUser: true
                 }
             }) as UserDtoList;
 
