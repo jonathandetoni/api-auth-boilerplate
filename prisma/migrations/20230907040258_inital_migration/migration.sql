@@ -5,7 +5,7 @@ CREATE TYPE "StatusDemands" AS ENUM ('NEW', 'OPEN_BUDGETS', 'RECEIVED_BUDGETS', 
 CREATE TYPE "StatusBudgets" AS ENUM ('SENT', 'OPEN', 'REFUSED', 'ACCEPTED');
 
 -- CreateEnum
-CREATE TYPE "TypeUsers" AS ENUM ('COMMON', 'PROFESSIONAL', 'ADMINISTRATOR');
+CREATE TYPE "TypeUsers" AS ENUM ('USER', 'ADMIN', 'COMMON', 'PROFESSIONAL', 'ADMINISTRATOR');
 
 -- CreateEnum
 CREATE TYPE "ContactsTypes" AS ENUM ('PHONE_NUMBER', 'CELPHONE_NUMBER', 'EMAIL', 'APP_WHATSAPP', 'MIDIASOCIAL_FACEBOOK', 'MIDIASOCIAL_INTAGRAM', 'OTHER');
@@ -50,13 +50,13 @@ CREATE TABLE "data-basic-users" (
 );
 
 -- CreateTable
-CREATE TABLE "addresses" (
+CREATE TABLE "adresses" (
     "id" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "dataBasicUsersId" UUID NOT NULL,
 
-    CONSTRAINT "addresses_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "adresses_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -130,31 +130,19 @@ CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 CREATE UNIQUE INDEX "users_cpf_key" ON "users"("cpf");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "users_tenantId_key" ON "users"("tenantId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "data-basic-users_id_key" ON "data-basic-users"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "data-basic-users_userId_key" ON "data-basic-users"("userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "addresses_id_key" ON "addresses"("id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "addresses_dataBasicUsersId_key" ON "addresses"("dataBasicUsersId");
+CREATE UNIQUE INDEX "adresses_id_key" ON "adresses"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "contacts_id_key" ON "contacts"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "contacts_dataBasicUsersId_key" ON "contacts"("dataBasicUsersId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "budgets-sent_id_key" ON "budgets-sent"("id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "budgets-sent_professionalId_key" ON "budgets-sent"("professionalId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "budgets_id_key" ON "budgets"("id");
@@ -163,19 +151,10 @@ CREATE UNIQUE INDEX "budgets_id_key" ON "budgets"("id");
 CREATE UNIQUE INDEX "budgets_name_key" ON "budgets"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "budgets_ownerId_key" ON "budgets"("ownerId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "comments_id_key" ON "comments"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "comments_parentCommentId_key" ON "comments"("parentCommentId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "comments_demandId_key" ON "comments"("demandId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "comments_ownerCommentId_key" ON "comments"("ownerCommentId");
 
 -- AddForeignKey
 ALTER TABLE "users" ADD CONSTRAINT "users_tenantId_fkey" FOREIGN KEY ("tenantId") REFERENCES "tenants"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -184,7 +163,7 @@ ALTER TABLE "users" ADD CONSTRAINT "users_tenantId_fkey" FOREIGN KEY ("tenantId"
 ALTER TABLE "data-basic-users" ADD CONSTRAINT "data-basic-users_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "addresses" ADD CONSTRAINT "addresses_dataBasicUsersId_fkey" FOREIGN KEY ("dataBasicUsersId") REFERENCES "data-basic-users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "adresses" ADD CONSTRAINT "adresses_dataBasicUsersId_fkey" FOREIGN KEY ("dataBasicUsersId") REFERENCES "data-basic-users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "contacts" ADD CONSTRAINT "contacts_dataBasicUsersId_fkey" FOREIGN KEY ("dataBasicUsersId") REFERENCES "data-basic-users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -193,7 +172,7 @@ ALTER TABLE "contacts" ADD CONSTRAINT "contacts_dataBasicUsersId_fkey" FOREIGN K
 ALTER TABLE "budgets-sent" ADD CONSTRAINT "budgets-sent_professionalId_fkey" FOREIGN KEY ("professionalId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "budgets" ADD CONSTRAINT "budgets_addressId_fkey" FOREIGN KEY ("addressId") REFERENCES "addresses"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "budgets" ADD CONSTRAINT "budgets_addressId_fkey" FOREIGN KEY ("addressId") REFERENCES "adresses"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "budgets" ADD CONSTRAINT "budgets_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

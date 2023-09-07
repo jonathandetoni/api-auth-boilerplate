@@ -1,8 +1,8 @@
 import { Router, Request, Response } from 'express';
 import { UserDtoCreate } from '../../../domain/dtos/DataBasic/User/UserDtoCreate';
-import { UserRepository } from '../../../domain/repositories/UserRepository';
-import { UserService } from '../../../service/UserService';
-import { UserController } from '../../controllers/UserController';
+import { UserRepository } from '../../../domain/repositories/DataBasic/UserRepository';
+import { UserService } from '../../../service/DataBasic/UserService';
+import { UserController } from '../../controllers/DataBasic/UserController';
 import { validationToken } from '../../../infrastrutucture/utils/middleware/authHelper';
 
 const userRouter = Router();

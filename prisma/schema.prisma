@@ -17,7 +17,7 @@ model Tenants {
   name String @db.VarChar(255) @unique
   description String @db.VarChar(255)
 
-  users Users?
+  users Users[]
 
   @@map("tenants")
 }
@@ -34,11 +34,11 @@ model Users {
   typeUser TypeUsers @default(COMMON)
 
   tenant Tenants @relation(fields: [tenantId], references: [id])
-  tenantId String @db.Uuid @unique
+  tenantId String @db.Uuid
 
   dataBasicUser DataBasicUsers?
-  demands Demands?
-  budgetsSent BudgetsSent?
+  demands Demands[]
+  budgetsSent BudgetsSent[]
   comments Comments[]
 
   @@map("users")
@@ -70,9 +70,9 @@ model Adresses {
   demands Demands[]
   
   dataBasicUsers DataBasicUsers @relation(fields: [dataBasicUsersId], references: [id])
-  dataBasicUsersId String @db.Uuid @unique
+  dataBasicUsersId String @db.Uuid
 
-  @@map("addresses")
+  @@map("adresses")
 }
 
 model Contacts { 
@@ -84,7 +84,7 @@ model Contacts {
   value String @db.VarChar(255)
 
   dataBasicUsers DataBasicUsers @relation(fields: [dataBasicUsersId], references: [id])
-  dataBasicUsersId String @db.Uuid @unique
+  dataBasicUsersId String @db.Uuid
 
   @@map("contacts")
 }
@@ -99,7 +99,7 @@ model BudgetsSent {
   value String @db.VarChar(255)
 
   professional Users @relation(fields: [professionalId], references: [id])
-  professionalId String @db.Uuid @unique
+  professionalId String @db.Uuid
 
   @@map("budgets-sent")
 }
@@ -121,7 +121,7 @@ model Demands {
   addressId String @db.Uuid
 
   owner Users @relation(fields: [ownerId], references: [id])
-  ownerId String @db.Uuid @unique
+  ownerId String @db.Uuid
 
   @@map("budgets")
 }
@@ -139,10 +139,10 @@ model Comments {
   parentCommentPredecessor Comments? @relation("parentCommentId")
 
   demand Demands @relation(fields: [demandId], references: [id])
-  demandId String @db.Uuid @unique
+  demandId String @db.Uuid 
 
   ownerComment Users @relation(fields: [ownerCommentId], references: [id])
-  ownerCommentId String @db.Uuid @unique
+  ownerCommentId String @db.Uuid 
   
   @@map("comments")
 }
@@ -163,6 +163,8 @@ enum StatusBudgets {
 }
 
 enum TypeUsers {
+  USER
+  ADMIN
   COMMON
   PROFESSIONAL
   ADMINISTRATOR

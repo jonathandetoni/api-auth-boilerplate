@@ -1,10 +1,10 @@
 import { Router, Request, Response } from 'express';
-import { AuthController } from '../../controllers/AuthController';
+import { AuthController } from '../../controllers/GeneralSystem/AuthController';
 import { AuthDto } from '../../../domain/dtos/GeneralSystem/Auth/AuthDto';
-import { AuthService } from '../../../service/AuthService';
-import { UserRepository } from '../../../domain/repositories/UserRepository';
-import { UserController } from '../../controllers/UserController';
-import { UserService } from '../../../service/UserService';
+import { AuthService } from '../../../service/GeneralSystem/AuthService';
+import { UserRepository } from '../../../domain/repositories/DataBasic/UserRepository';
+import { UserController } from '../../controllers/DataBasic/UserController';
+import { UserService } from '../../../service/DataBasic/UserService';
 
 const authRouter = Router();
 

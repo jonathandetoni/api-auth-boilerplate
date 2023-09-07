@@ -1,9 +1,9 @@
+import { AuthDto, AuthDtoResult } from "../../domain/dtos/GeneralSystem/Auth/AuthDto";
+import { IUserRepository } from "../../domain/interfaces/repository/DataBasic/IUserRepository";
+import { IAuthService } from "../../domain/interfaces/service/GeneralSystem/IAuthService";
+import { Logger } from "../../infrastrutucture/utils/log/logger";
+import { comparePasswords, jwtSign } from "../../infrastrutucture/utils/middleware/authHelper";
 
-import { AuthDto, AuthDtoResult } from "../domain/dtos/GeneralSystem/Auth/AuthDto";
-import { IUserRepository } from "../domain/interfaces/repository/IUserRepository";
-import { IAuthService } from "../domain/interfaces/service/IAuthService";
-import { Logger } from "../infrastrutucture/utils/log/logger";
-import { comparePasswords, jwtSign } from "../infrastrutucture/utils/middleware/authHelper";
 
 export interface IAuthResult {
   user: {

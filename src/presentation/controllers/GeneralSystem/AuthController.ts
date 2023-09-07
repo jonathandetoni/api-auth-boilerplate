@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { IAuthService } from '../../domain/interfaces/service/IAuthService';
-import { statusCode } from '../../infrastrutucture/utils';
-import { Logger } from '../../infrastrutucture/utils/log/logger';
-import { AuthDto } from '../../domain/dtos/GeneralSystem/Auth/AuthDto';
+import { IAuthService } from '../../../domain/interfaces/service/GeneralSystem/IAuthService';
+import { statusCode } from '../../../infrastrutucture/utils';
+import { Logger } from '../../../infrastrutucture/utils/log/logger';
+import { AuthDto } from '../../../domain/dtos/GeneralSystem/Auth/AuthDto';
 
 class AuthController {
     private readonly _service: IAuthService;

@@ -1,9 +1,9 @@
-import { UserDtoCreate } from "../domain/dtos/DataBasic/User/UserDtoCreate";
-import { UserDtoList } from "../domain/dtos/DataBasic/User/UserDtoList";
-import { UserDtoCreateResult } from "../domain/dtos/DataBasic/User/result/UserDtoCreateResult";
-import { IUserRepository } from "../domain/interfaces/repository/IUserRepository";
-import { IUserService } from "../domain/interfaces/service/IUserService";
-import { jwtDecode } from "../infrastrutucture/utils/middleware/authHelper";
+import { UserDtoCreate } from "../../domain/dtos/DataBasic/User/UserDtoCreate";
+import { UserDtoList } from "../../domain/dtos/DataBasic/User/UserDtoList";
+import { UserDtoCreateResult } from "../../domain/dtos/DataBasic/User/result/UserDtoCreateResult";
+import { IUserRepository } from "../../domain/interfaces/repository/DataBasic/IUserRepository";
+import { IUserService } from "../../domain/interfaces/service/DataBasic/IUserService";
+import { jwtDecode } from "../../infrastrutucture/utils/middleware/authHelper";
 
 export interface IUserResult {
   user: {
