@@ -25,31 +25,25 @@ class TenantController {
         }
     }
 
-    async read(request: Request<{id: string}>, response: Response) : Promise<Response> {
-        const { id } = request.params
-        
-        if(id != null)
-        {
-            var result = await this._service.read(id);
-        } else {
-            return response.status(statusCode.BAD_REQUEST_ERROR_CODE).json("Parâmetro id não encontrado!");
+    async read(request: Request<{}, {}, {}, {id: string, name: string}>, response: Response) : Promise<Response> {
+        const id = request.query.id
+        const name = request.query.name
+        let result;
+
+        if(id != null){
+            result = await this._service.read(id);
+        } 
+
+        if(name != null){
+            result = await this._service.readByName(name);
+        }
+
+        if(name == null && id == null){
+            return response.status(statusCode.BAD_REQUEST_ERROR_CODE).json("Parâmetro name ou id não encontrado!");
         }
 
         return response.status(statusCode.SUCCESS_REQUEST_CODE).json(result);
     }
-
-    async readByName(request: Request<{name: string}>, response: Response) : Promise<Response> {
-      const { name } = request.params
-      
-      if(name != null)
-      {
-          var result = await this._service.readByName(name);
-      } else {
-          return response.status(statusCode.BAD_REQUEST_ERROR_CODE).json("Parâmetro name não encontrado!");
-      }
-
-      return response.status(statusCode.SUCCESS_REQUEST_CODE).json(result);
-  }
 }
 
 export { TenantController }
