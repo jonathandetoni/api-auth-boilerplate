@@ -93,9 +93,9 @@ CREATE TABLE "budgets" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "description" VARCHAR(255) NOT NULL,
-    "status" "StatusBudgets" NOT NULL DEFAULT 'OPEN',
+    "status" "StatusBudgets" NOT NULL DEFAULT 'SENT',
     "value" VARCHAR(255) NOT NULL,
-    "professionalId" UUID NOT NULL,
+    "ownerId" UUID NOT NULL,
     "demandId" UUID NOT NULL,
 
     CONSTRAINT "budgets_pkey" PRIMARY KEY ("id")
@@ -173,7 +173,7 @@ ALTER TABLE "demands" ADD CONSTRAINT "demands_addressId_fkey" FOREIGN KEY ("addr
 ALTER TABLE "demands" ADD CONSTRAINT "demands_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "budgets" ADD CONSTRAINT "budgets_professionalId_fkey" FOREIGN KEY ("professionalId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "budgets" ADD CONSTRAINT "budgets_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "budgets" ADD CONSTRAINT "budgets_demandId_fkey" FOREIGN KEY ("demandId") REFERENCES "demands"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

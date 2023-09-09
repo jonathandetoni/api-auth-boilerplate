@@ -1,4 +1,6 @@
 import { StatusDemands } from "../../../../../infrastructure/utils/constants/statusDemands";
+import { UserDtoList } from "../../User/UserDtoList";
+import { BudgetsDtoList } from "../Budgets/BudgetsDtoList";
 
 
 export type DemandsDtoList = {
@@ -8,8 +10,10 @@ export type DemandsDtoList = {
     status: StatusDemands;
     category: string;
     typeService: string;
-    addressId: string;
-    ownerId: string;
+    address: object;
+    owner: UserDtoList;
+    comments: object[];
+    budgets: BudgetsDtoList[];
     createdAt: Date;
     updatedAt: Date;
 }

@@ -118,11 +118,11 @@ model Budgets {
   updatedAt DateTime @updatedAt
 
   description String @db.VarChar(255)
-  status StatusBudgets @default(OPEN)
+  status StatusBudgets @default(SENT)
   value String @db.VarChar(255)
 
-  professional Users @relation(fields: [professionalId], references: [id])
-  professionalId String @db.Uuid
+  owner Users @relation(fields: [ownerId], references: [id])
+  ownerId String @db.Uuid
 
   demand Demands @relation(fields: [demandId], references: [id])
   demandId String @db.Uuid 

@@ -19,6 +19,44 @@ class DemandsRepository implements IDemandsRepository {
                     typeService: entity.typeService,
                     addressId: entity.addressId,
                     ownerId: entity.ownerId
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    description: true,
+                    status: true,
+                    category: true,
+                    typeService: true,
+                    address: true,
+                    comments: true,
+                    budgets: {
+                        select: {
+                            id: true,
+                            description: true,
+                            status: true,
+                            value: true,
+                            owner: {
+                                select: {
+                                    id: true,
+                                    createdAt: true,
+                                    email: true,
+                                    tenant: true,
+                                    role: true,
+                                    typeUser: true
+                                }
+                            }
+                        }
+                    },
+                    owner: {
+                        select: {
+                            id: true,
+                            createdAt: true,
+                            email: true,
+                            tenant: true,
+                            role: true,
+                            typeUser: true
+                        }
+                    }
                 }
             }) as DemandsDtoCreateResult
 
@@ -50,6 +88,44 @@ class DemandsRepository implements IDemandsRepository {
             const resultRead = await prismaClient.demands.findFirstOrThrow({
                 where: {
                     id: id
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    description: true,
+                    status: true,
+                    category: true,
+                    typeService: true,
+                    address: true,
+                    comments: true,
+                    budgets: {
+                        select: {
+                            id: true,
+                            description: true,
+                            status: true,
+                            value: true,
+                            owner: {
+                                select: {
+                                    id: true,
+                                    createdAt: true,
+                                    email: true,
+                                    tenant: true,
+                                    role: true,
+                                    typeUser: true
+                                }
+                            }
+                        }
+                    },
+                    owner: {
+                        select: {
+                            id: true,
+                            createdAt: true,
+                            email: true,
+                            tenant: true,
+                            role: true,
+                            typeUser: true
+                        }
+                    }
                 }
             }) as DemandsDtoList;
 
@@ -81,6 +157,44 @@ class DemandsRepository implements IDemandsRepository {
             const resultRead = await prismaClient.demands.findFirstOrThrow({
                 where: {
                     ownerId: ownerId
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    description: true,
+                    status: true,
+                    category: true,
+                    typeService: true,
+                    address: true,
+                    comments: true,
+                    budgets: {
+                        select: {
+                            id: true,
+                            description: true,
+                            status: true,
+                            value: true,
+                            owner: {
+                                select: {
+                                    id: true,
+                                    createdAt: true,
+                                    email: true,
+                                    tenant: true,
+                                    role: true,
+                                    typeUser: true
+                                }
+                            }
+                        }
+                    }, 
+                    owner: {
+                        select: {
+                            id: true,
+                            createdAt: true,
+                            email: true,
+                            tenant: true,
+                            role: true,
+                            typeUser: true
+                        }
+                    }
                 }
             }) as DemandsDtoList;
 

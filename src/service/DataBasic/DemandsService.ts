@@ -11,7 +11,6 @@ class DemandsService implements IDemandsService {
   }
 
   async create(entity: DemandsDtoCreate): Promise<GeneralResponse> {
-    console.log('entity - service: ', entity)
     return await this._demandsRepository.create(entity);
   }
 
