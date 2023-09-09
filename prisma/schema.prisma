@@ -37,9 +37,6 @@ model Users {
   tenantId String @db.Uuid
 
   dataBasicUser DataBasicUsers?
-  demands Demands[]
-  budgetsSent BudgetsSent[]
-  comments Comments[]
 
   @@map("users")
 }
@@ -66,8 +63,6 @@ model Adresses {
   id String @id @default(uuid()) @db.Uuid @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  demands Demands[]
   
   dataBasicUsers DataBasicUsers @relation(fields: [dataBasicUsersId], references: [id])
   dataBasicUsersId String @db.Uuid
@@ -87,64 +82,6 @@ model Contacts {
   dataBasicUsersId String @db.Uuid
 
   @@map("contacts")
-}
-
-model BudgetsSent {
-  id String @id @default(uuid()) @db.Uuid @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  description String @db.VarChar(255)
-  status StatusBudgets @default(OPEN)
-  value String @db.VarChar(255)
-
-  professional Users @relation(fields: [professionalId], references: [id])
-  professionalId String @db.Uuid
-
-  @@map("budgets-sent")
-}
-
-model Demands {
-  id String @id @default(uuid()) @db.Uuid @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  name String @db.VarChar(255) @unique
-  description String @db.VarChar(255)
-  status StatusDemands @default(NEW)
-  category String @db.VarChar(255)
-  typeService String @db.VarChar(255)
-
-  comments Comments[]
-
-  address Adresses @relation(fields: [addressId], references: [id])
-  addressId String @db.Uuid
-
-  owner Users @relation(fields: [ownerId], references: [id])
-  ownerId String @db.Uuid
-
-  @@map("budgets")
-}
-
-model Comments {
-  id String @id @default(uuid()) @db.Uuid @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  comment String @db.Text()
-  visible Boolean @db.Boolean() @default(true) 
-
-  parentCommentId String? @db.Uuid @unique
-  parentComment Comments? @relation("parentCommentId", fields: [parentCommentId], references: [id])
-  parentCommentPredecessor Comments? @relation("parentCommentId")
-
-  demand Demands @relation(fields: [demandId], references: [id])
-  demandId String @db.Uuid 
-
-  ownerComment Users @relation(fields: [ownerCommentId], references: [id])
-  ownerCommentId String @db.Uuid 
-  
-  @@map("comments")
 }
 
 enum StatusDemands { 
