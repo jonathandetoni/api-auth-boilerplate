@@ -1,21 +1,18 @@
 import { UserDtoCreate } from "../../domain/dtos/DataBasic/User/UserDtoCreate";
-import { UserDtoList } from "../../domain/dtos/DataBasic/User/UserDtoList";
-import { UserDtoCreateResult } from "../../domain/dtos/DataBasic/User/result/UserDtoCreateResult";
 import { TenantDtoList } from "../../domain/dtos/GeneralSystem/Tenant/TenantDtoList";
 import { IUserRepository } from "../../domain/interfaces/repository/DataBasic/IUserRepository";
 import { IUserService } from "../../domain/interfaces/service/DataBasic/IUserService";
+import { GeneralResponse } from "../../domain/interfaces/service/generalResponse";
 import { TypeUser } from "../../infrastructure/utils/constants/typesUser";
 import { jwtDecode } from "../../infrastructure/utils/middleware/authHelper";
 
 export interface IUserResult {
-  user: {
     id: string;
     email: string;
     cpf: string;
     tenant: TenantDtoList;
     role: string;
     typeUser: TypeUser
-  }
 }
 
 class UserService implements IUserService {
@@ -24,33 +21,32 @@ class UserService implements IUserService {
   constructor(repository: IUserRepository){
     this._repository = repository;
   }
-  async me(token: string): Promise<IUserResult> {
+  
+  async me(token: string): Promise<GeneralResponse> {
     const userDecoded = await jwtDecode(token);
 
-    const user = await this._repository.read(userDecoded.id);
+    const resulRead = await this._repository.read(userDecoded.id);
 
-    const result : IUserResult = {
-      user: {
-        id: user.id,
-        email: user.email,
-        cpf: user.cpf,
-        tenant: user.tenant,
-        role: user.role,
-        typeUser: user.typeUser
-      }
+    const data: IUserResult = {
+      id: resulRead.data.id,
+      email: resulRead.data.email,
+      cpf: resulRead.data.cpf,
+      tenant: resulRead.data.tenant,
+      role: resulRead.data.role,
+      typeUser: resulRead.data.typeUser
     }
 
-    return result;
+    return {
+      success: resulRead.success,
+      statusCode: resulRead.statusCode,
+      data
+    }
   }
-  async read(id: string): Promise<UserDtoList> {
-    const result = await this._repository.read(id);
-
-    return result;
+  async read(id: string): Promise<GeneralResponse> {
+    return await this._repository.read(id);
   }
-  async create(entity: UserDtoCreate): Promise<UserDtoCreateResult> {
-    const result = await this._repository.create(entity)
-
-    return result;
+  async create(entity: UserDtoCreate): Promise<GeneralResponse> {
+    return await this._repository.create(entity);
   }
 }
 

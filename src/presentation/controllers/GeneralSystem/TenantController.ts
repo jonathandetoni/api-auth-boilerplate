@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
-import { statusCode } from '../../../infrastructure/utils';
 import { Logger } from '../../../infrastructure/utils/log/logger';
 import { ITenantService } from '../../../domain/interfaces/service/GeneralSystem/ITenantService';
 import { TenantDtoCreate } from '../../../domain/dtos/GeneralSystem/Tenant/TenantDtoCreate';
+import { HttpStatusCode } from '../../../infrastructure/utils/constants/httpStatusCode';
+import { GeneralResponse } from '../../../domain/interfaces/service/generalResponse';
 
 class TenantController {
     private readonly _service: ITenantService;
@@ -14,35 +15,70 @@ class TenantController {
     async create(request: Request<{}, {}, TenantDtoCreate>, response: Response) : Promise<Response> {
         try {
             const entity: TenantDtoCreate = request.body;
-            console.log(entity)
             const result = await this._service.create(entity);
 
-            return response.status(statusCode.SUCCESS_REQUEST_CODE).json(result);
-        } catch (error) {
+            return response.status(HttpStatusCode.OK).json(result);
+        } catch (error: any) {
+            let result: GeneralResponse = {
+                success: false,
+                statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+                error: {
+                    message: 'Erro inesperado!',
+                    errorMessage: error.message,
+                    details: [{
+                        errorDetails: error
+                    }]
+                }
+            }
+
             Logger.error(error)
             
-            return response.status(statusCode.BAD_REQUEST_ERROR_CODE).json(error);
+            return response.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(result);
         }
     }
 
     async read(request: Request<{}, {}, {}, {id: string, name: string}>, response: Response) : Promise<Response> {
-        const id = request.query.id
-        const name = request.query.name
-        let result;
+        try {
+            const id = request.query.id
+            const name = request.query.name
+            let result: GeneralResponse;
 
-        if(id != null){
-            result = await this._service.read(id);
-        } 
+            if(name == null && id == null){
+                result = {
+                    success: false,
+                    statusCode: HttpStatusCode.BAD_REQUEST,
+                    error: {
+                        message: 'Parâmetro name ou id não encontrado!'
+                    }
+                }
+                
+                return response.status(HttpStatusCode.BAD_REQUEST).json(result);
+            }
 
-        if(name != null){
+            if(id != null){
+                result = await this._service.read(id);
+            } 
+
             result = await this._service.readByName(name);
-        }
 
-        if(name == null && id == null){
-            return response.status(statusCode.BAD_REQUEST_ERROR_CODE).json("Parâmetro name ou id não encontrado!");
-        }
+            return response.status(HttpStatusCode.OK).json(result);
+        } catch (error: any) {
+            let result: GeneralResponse = {
+                success: false,
+                statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+                error: {
+                    message: 'Erro inesperado!',
+                    errorMessage: error.message,
+                    details: [{
+                        errorDetails: error
+                    }]
+                }
+            }
 
-        return response.status(statusCode.SUCCESS_REQUEST_CODE).json(result);
+            Logger.error(error)
+            
+            return response.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(result);
+        }
     }
 }
 

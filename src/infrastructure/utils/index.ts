@@ -1,1 +1,1 @@
-export { StatusCode as statusCode } from './constants/statusCode';
+export { HttpStatusCode as statusCode } from './constants/httpStatusCode';

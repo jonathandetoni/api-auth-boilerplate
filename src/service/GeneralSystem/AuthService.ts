@@ -2,10 +2,10 @@ import { AuthDto, AuthDtoResult } from "../../domain/dtos/GeneralSystem/Auth/Aut
 import { TenantDtoList } from "../../domain/dtos/GeneralSystem/Tenant/TenantDtoList";
 import { IUserRepository } from "../../domain/interfaces/repository/DataBasic/IUserRepository";
 import { IAuthService } from "../../domain/interfaces/service/GeneralSystem/IAuthService";
+import { GeneralResponse } from "../../domain/interfaces/service/generalResponse";
+import { HttpStatusCode } from "../../infrastructure/utils/constants/httpStatusCode";
 import { TypeUser } from "../../infrastructure/utils/constants/typesUser";
-import { Logger } from "../../infrastructure/utils/log/logger";
 import { comparePasswords, jwtSign } from "../../infrastructure/utils/middleware/authHelper";
-
 
 export interface IAuthResult {
   user: {
@@ -27,27 +27,37 @@ class AuthService implements IAuthService {
     this._repositoryUser = repositoryUser;
   }
   
-  async auth(entity: AuthDto): Promise<AuthDtoResult> {
-    const user = await this._repositoryUser.readByEmailWithPassword(entity.email);
-    
-    if (!user || !user.password || !await comparePasswords(entity.password, user.password)) {
-      throw Logger.error("Email or password ivalid!");
+  async auth(entity: AuthDto): Promise<GeneralResponse> {
+    const resulRead = await this._repositoryUser.readByEmailWithPassword(entity.email);
+
+    if (!resulRead || !resulRead.data.password || !await comparePasswords(entity.password, resulRead.data.password)) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        error: {
+          message: 'Email or password ivalid!'
+        }
+      };
     }
 
-    const result : IAuthResult = {
+    const data : IAuthResult = {
       user: {
-        id: user.id,
-        email: user.email,
-        cpf: user.cpf,
-        role: user.role,
-        typeUser: user.typeUser,
-        tenant: user.tenant
+        id: resulRead.data.id,
+        email: resulRead.data.email,
+        cpf: resulRead.data.cpf,
+        role: resulRead.data.role,
+        typeUser: resulRead.data.typeUser,
+        tenant: resulRead.data.tenant
       },
-      acessToken: await jwtSign(user),
+      acessToken: await jwtSign(resulRead.data),
       authorized: true
     }
 
-    return result;
+    return {
+      success: resulRead.success,
+      statusCode: resulRead.statusCode,
+      data
+    };
   }
 }
 

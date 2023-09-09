@@ -1,10 +1,9 @@
-import { IUserResult } from "../../../../service/DataBasic/UserService";
+
 import { UserDtoCreate } from "../../../dtos/DataBasic/User/UserDtoCreate";
-import { UserDtoList } from "../../../dtos/DataBasic/User/UserDtoList";
-import { UserDtoCreateResult } from "../../../dtos/DataBasic/User/result/UserDtoCreateResult";
+import { GeneralResponse } from "../generalResponse";
 
 export interface IUserService {
-    create(entity: UserDtoCreate) : Promise<UserDtoCreateResult>;
-    read(id: string) : Promise<UserDtoList>;
-    me(token: string) : Promise<IUserResult>;
+    create(entity: UserDtoCreate) : Promise<GeneralResponse>;
+    read(id: string) : Promise<GeneralResponse>;
+    me(token: string) : Promise<GeneralResponse>;
 }

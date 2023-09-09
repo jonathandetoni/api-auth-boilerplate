@@ -1,14 +1,15 @@
 import { prismaClient } from '../../../infrastructure/config/database/prismaClient';
-import { Logger } from '../../../infrastructure/utils/log/logger';
-import { Prisma } from '@prisma/client';
+import { LogLevelEnum, Logger } from '../../../infrastructure/utils/log/logger';
 import { IUserRepository } from '../../interfaces/repository/DataBasic/IUserRepository';
 import { UserDtoList } from '../../dtos/DataBasic/User/UserDtoList';
 import { UserDtoCreate } from '../../dtos/DataBasic/User/UserDtoCreate';
 import { UserDtoCreateResult } from '../../dtos/DataBasic/User/result/UserDtoCreateResult';
 import { hashPassword } from '../../../infrastructure/utils/middleware/authHelper';
+import { GeneralResponse } from '../../interfaces/service/generalResponse';
+import { HttpStatusCode } from '../../../infrastructure/utils/constants/httpStatusCode';
 
 class UserRepository implements IUserRepository {
-    async create(entity: UserDtoCreate): Promise<UserDtoCreateResult> {
+    async create(entity: UserDtoCreate): Promise<GeneralResponse> {
         try {
             const upsertReturn = await prismaClient.users.upsert({
                 where: {
@@ -40,18 +41,32 @@ class UserRepository implements IUserRepository {
                 }
             }) as UserDtoCreateResult
 
-            console.log('error: ', upsertReturn)
+            return {
+                success: true,
+                statusCode: HttpStatusCode.OK,
+                data: upsertReturn
+            }
+        } catch (error: any) {
+            Logger.error(error);
 
-            return upsertReturn;
-        } catch (error) {
-            console.log('catch error: ', error)
-            throw Logger.error(error);
+            return {
+                success: false,
+                error: {
+                    message: "Erro inesperado ao criar Tenant.",
+                    errorMessage: error.message,
+                    details: [{
+                        errorDetails: error.toString(),
+                        typeError: LogLevelEnum.ERROR    
+                    }]
+                },
+                statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR
+            }
         }
     }
 
-    async read(id: string): Promise<UserDtoList> {
+    async read(id: string): Promise<GeneralResponse> {
         try {
-            const findFirstOrThrowReturn = await prismaClient.users.findFirstOrThrow({
+            const resultRead = await prismaClient.users.findFirstOrThrow({
                 where: {
                     id: id
                 },
@@ -64,19 +79,32 @@ class UserRepository implements IUserRepository {
                 }
             }) as UserDtoList;
 
-            return findFirstOrThrowReturn;
-        } catch (error) {
-            if (error instanceof Prisma.NotFoundError) {
-                throw Logger.error(error.message);
+            return {
+                success: true,
+                statusCode: HttpStatusCode.OK,
+                data: resultRead
             }
+        } catch (error: any) {
+            Logger.error(error)
 
-            throw Logger.error(error)
+            return {
+                success: false,
+                error: {
+                    message: "Erro inesperado ao criar Tenant.",
+                    errorMessage: error.message,
+                    details: [{
+                        errorDetails: error.toString(),
+                        typeError: LogLevelEnum.ERROR    
+                    }]
+                },
+                statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR
+            }
         }
     }
 
-    async readByEmail(email: string): Promise<UserDtoList> {
+    async readByEmail(email: string): Promise<GeneralResponse> {
         try {
-            const findFirstOrThrow = await prismaClient.users.findFirstOrThrow({
+            const resultRead = await prismaClient.users.findFirstOrThrow({
                 where: {
                     email: email
                 },
@@ -89,19 +117,32 @@ class UserRepository implements IUserRepository {
                 }
             }) as UserDtoList;
 
-            return findFirstOrThrow;
-        } catch (error) {
-            if (error instanceof Prisma.NotFoundError) {
-                throw Logger.error(error.message);
-            }
+            return {
+                success: true,
+                statusCode: HttpStatusCode.OK,
+                data: resultRead
+            };
+        } catch (error: any) {
+            Logger.error(error)
 
-            throw Logger.error(error)
+            return {
+                success: false,
+                error: {
+                    message: "Erro inesperado ao criar Tenant.",
+                    errorMessage: error.message,
+                    details: [{
+                        errorDetails: error.toString(),
+                        typeError: LogLevelEnum.ERROR    
+                    }]
+                },
+                statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR
+            }
         }
     }
 
-    async readByEmailWithPassword(email: string): Promise<UserDtoList> {
+    async readByEmailWithPassword(email: string): Promise<GeneralResponse> {
         try {
-            const findFirstOrThrow = await prismaClient.users.findFirstOrThrow({
+            const resultRead = await prismaClient.users.findFirstOrThrow({
                 where: {
                     email: email
                 },
@@ -118,13 +159,26 @@ class UserRepository implements IUserRepository {
                 }
             }) as UserDtoList;
 
-            return findFirstOrThrow;
-        } catch (error) {
-            if (error instanceof Prisma.NotFoundError) {
-                throw Logger.error(error.message);
-            }
+            return {
+                success: true,
+                statusCode: HttpStatusCode.OK,
+                data: resultRead
+            };
+        } catch (error: any) {
+            Logger.error(error)
 
-            throw Logger.error(error)
+            return {
+                success: false,
+                error: {
+                    message: "Erro inesperado ao criar Tenant.",
+                    errorMessage: error.message,
+                    details: [{
+                        errorDetails: error.toString(),
+                        typeError: LogLevelEnum.ERROR    
+                    }]
+                },
+                statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR
+            }
         }
     }
 }

@@ -1,10 +1,11 @@
 import { PrismaClient } from '@prisma/client'
 import { getEnv } from '../src/infrastructure/config/env'
+import { hashPassword } from '../src/infrastructure/utils/middleware/authHelper'
 
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log(getEnv().NODE_ENV)
+  console.log('NODE_ENV: ', getEnv().NODE_ENV);
   switch (getEnv().NODE_ENV) {
     case 'development':
       const tenant = await prisma.tenants.upsert({
@@ -29,7 +30,7 @@ async function main() {
         },
         create: {
           email: 'user@newproject.com',
-          password: 'NewProjectPassword',
+          password: await hashPassword('NewProjectPassword'),
           cpf: '01234567890',
           tenantId: tenant.id,
           typeUser: 'ADMINISTRATOR',
@@ -42,7 +43,7 @@ async function main() {
         },
         update: {
           email: 'user@newproject.com',
-          password: 'NewProjectPassword',
+          password: await hashPassword('NewProjectPassword'),
           cpf: '01234567890',
           tenantId: tenant.id,
           typeUser: 'ADMINISTRATOR',
