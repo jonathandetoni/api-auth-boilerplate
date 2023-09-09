@@ -38,7 +38,7 @@ model Users {
 
   dataBasicUser DataBasicUsers?
   demands Demands[]
-  budgetsSent BudgetsSent[]
+  budgets Budgets[]
   comments Comments[]
 
   @@map("users")
@@ -89,21 +89,6 @@ model Contacts {
   @@map("contacts")
 }
 
-model BudgetsSent {
-  id String @id @default(uuid()) @db.Uuid @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  description String @db.VarChar(255)
-  status StatusBudgets @default(OPEN)
-  value String @db.VarChar(255)
-
-  professional Users @relation(fields: [professionalId], references: [id])
-  professionalId String @db.Uuid
-
-  @@map("budgets-sent")
-}
-
 model Demands {
   id String @id @default(uuid()) @db.Uuid @unique
   createdAt DateTime @default(now())
@@ -116,12 +101,31 @@ model Demands {
   typeService String @db.VarChar(255)
 
   comments Comments[]
+  budgets Budgets[]
 
   address Adresses @relation(fields: [addressId], references: [id])
   addressId String @db.Uuid
 
   owner Users @relation(fields: [ownerId], references: [id])
   ownerId String @db.Uuid
+
+  @@map("demands")
+}
+
+model Budgets {
+  id String @id @default(uuid()) @db.Uuid @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  description String @db.VarChar(255)
+  status StatusBudgets @default(OPEN)
+  value String @db.VarChar(255)
+
+  professional Users @relation(fields: [professionalId], references: [id])
+  professionalId String @db.Uuid
+
+  demand Demands @relation(fields: [demandId], references: [id])
+  demandId String @db.Uuid 
 
   @@map("budgets")
 }
