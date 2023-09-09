@@ -1,4 +1,4 @@
-import { UserDtoList } from "../User/UserDtoList";
+import { UserDtoList } from "../../User/UserDtoList";
 
 export type DataBasicUsersDtoList = {
     id: string;

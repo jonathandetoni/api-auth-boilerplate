@@ -146,9 +146,6 @@ CREATE UNIQUE INDEX "contacts_id_key" ON "contacts"("id");
 CREATE UNIQUE INDEX "demands_id_key" ON "demands"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "demands_name_key" ON "demands"("name");
-
--- CreateIndex
 CREATE UNIQUE INDEX "budgets_id_key" ON "budgets"("id");
 
 -- CreateIndex

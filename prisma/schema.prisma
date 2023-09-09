@@ -94,7 +94,7 @@ model Demands {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  name String @db.VarChar(255) @unique
+  name String @db.VarChar(255)
   description String @db.VarChar(255)
   status StatusDemands @default(NEW)
   category String @db.VarChar(255)
