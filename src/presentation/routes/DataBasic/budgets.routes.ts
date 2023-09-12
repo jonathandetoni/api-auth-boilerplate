@@ -15,6 +15,10 @@ budgetsRouter.post('/budgets', validationToken,(request: Request<{}, {}, Budgets
     return budgetsController.create(request, response);
 });
 
+budgetsRouter.post('/budgets/:budgetId', validationToken,(request: Request<{budgetId: string}>, response: Response) => {
+    return budgetsController.delete(request, response);
+});
+
 budgetsRouter.get('/budgets', validationToken, (request: Request<{}, {}, {}, {id: string, ownerId: string, demandId: string}>, response: Response) => {
     return budgetsController.read(request, response);
 });

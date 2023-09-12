@@ -5,4 +5,5 @@ export interface IDemandsRepository {
     create(entity: DemandsDtoCreate ) : Promise<GeneralResponse>;
     read(id: string) : Promise<GeneralResponse>;
     readByOwnerId(ownerId: string): Promise<GeneralResponse>;
+    delete(budgetId: string): Promise<GeneralResponse>;
 }

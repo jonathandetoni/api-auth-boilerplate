@@ -40,9 +40,13 @@ class BudgetsRepository implements IBudgetsRepository {
                                 email: true,
                                 tenant: true,
                                 role: true,
-                                typeUser: true
+                                typeUser: true,
+                                deleted: true,
+                                deletedAt: true
                             }
-                        }
+                        },
+                        deleted: true,
+                        deletedAt: true
                     }
                 },
                 owner: {
@@ -52,9 +56,13 @@ class BudgetsRepository implements IBudgetsRepository {
                         email: true,
                         tenant: true,
                         role: true,
-                        typeUser: true
+                        typeUser: true,
+                        deleted: true,
+                        deletedAt: true
                     }
-                }
+                },
+                deleted: true,
+                deletedAt: true
               }
             }) as BudgetsDtoCreateResult;
 
@@ -96,6 +104,8 @@ class BudgetsRepository implements IBudgetsRepository {
                     demand: {
                         select: {
                             id: true,
+                            deleted: true,
+                            deletedAt: true,
                             name: true,
                             description: true,
                             status: true,
@@ -109,12 +119,16 @@ class BudgetsRepository implements IBudgetsRepository {
                         select: {
                             id: true,
                             createdAt: true,
+                            deleted: true,
+                            deletedAt: true,
                             email: true,
                             tenant: true,
                             role: true,
                             typeUser: true
                         }
-                    }
+                    },
+                    deleted: true,
+                    deletedAt: true
                 }
             }) as BudgetsDtoList;
 
@@ -169,9 +183,13 @@ class BudgetsRepository implements IBudgetsRepository {
                                     email: true,
                                     tenant: true,
                                     role: true,
-                                    typeUser: true
+                                    typeUser: true,
+                                    deleted: true,
+                                    deletedAt: true
                                 }
-                            }
+                            },
+                            deleted: true,
+                            deletedAt: true
                         }
                     },
                     owner: {
@@ -181,9 +199,13 @@ class BudgetsRepository implements IBudgetsRepository {
                             email: true,
                             tenant: true,
                             role: true,
-                            typeUser: true
+                            typeUser: true,
+                            deleted: true,
+                            deletedAt: true
                         }
-                    }
+                    },
+                    deleted: true,
+                    deletedAt: true
                 }
             }) as BudgetsDtoList;
 
@@ -245,9 +267,13 @@ class BudgetsRepository implements IBudgetsRepository {
                                             email: true,
                                             tenant: true,
                                             role: true,
-                                            typeUser: true
+                                            typeUser: true,
+                                            deleted: true,
+                                            deletedAt: true
                                         }
-                                    }
+                                    },
+                                    deleted: true,
+                                    deletedAt: true
                                 }
                             },
                             owner: {
@@ -257,9 +283,13 @@ class BudgetsRepository implements IBudgetsRepository {
                                     email: true,
                                     tenant: true,
                                     role: true,
-                                    typeUser: true
+                                    typeUser: true,
+                                    deleted: true,
+                                    deletedAt: true
                                 }
-                            }
+                            },
+                            deleted: true,
+                            deletedAt: true
                         }
                     },
                     owner: {
@@ -269,9 +299,13 @@ class BudgetsRepository implements IBudgetsRepository {
                             email: true,
                             tenant: true,
                             role: true,
-                            typeUser: true
+                            typeUser: true,
+                            deleted: true,
+                            deletedAt: true
                         }
-                    }
+                    },
+                    deleted: true,
+                    deletedAt: true
                 }
             }) as BudgetsDtoList;
 
@@ -287,6 +321,110 @@ class BudgetsRepository implements IBudgetsRepository {
                 success: false,
                 error: {
                     message: "Erro inesperado ao consultar orçamento por demanda.",
+                    errorMessage: error.message,
+                    details: [{
+                        errorDetails: error.toString(),
+                        typeError: LogLevelEnum.ERROR    
+                    }]
+                },
+                statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR
+            }
+        }
+    }
+
+    async delete(budgetId: string) : Promise<GeneralResponse> {
+        try {
+            const deleteResult = await prismaClient.budgets.update({
+                where: {
+                    id: budgetId
+                },
+                data: {
+                    deleted: true,
+                    deletedAt: new Date()
+                },
+                select: {
+                    id: true,
+                    createdAt: true,
+                    description: true,
+                    status: true,
+                    value: true,
+                    demand: {
+                        select: {
+                            id: true,
+                            name: true,
+                            description: true,
+                            status: true,
+                            category: true,
+                            typeService: true,
+                            address: true,
+                            comments: true,
+                            budgets: {
+                                select: {
+                                    id: true,
+                                    description: true,
+                                    status: true,
+                                    value: true,
+                                    owner: {
+                                        select: {
+                                            id: true,
+                                            createdAt: true,
+                                            email: true,
+                                            tenant: true,
+                                            role: true,
+                                            typeUser: true,
+                                            deleted: true,
+                                            deletedAt: true
+                                        }
+                                    },
+                                    deleted: true,
+                                    deletedAt: true
+                                }
+                            },
+                            owner: {
+                                select: {
+                                    id: true,
+                                    createdAt: true,
+                                    email: true,
+                                    tenant: true,
+                                    role: true,
+                                    typeUser: true,
+                                    deleted: true,
+                                    deletedAt: true
+                                }
+                            },
+                            deleted: true,
+                            deletedAt: true
+                        }
+                    },
+                    owner: {
+                        select: {
+                            id: true,
+                            createdAt: true,
+                            email: true,
+                            tenant: true,
+                            role: true,
+                            typeUser: true,
+                            deleted: true,
+                            deletedAt: true
+                        }
+                    },
+                    deleted: true,
+                    deletedAt: true
+                }
+            }) as BudgetsDtoList;
+
+            return {
+                success: true,
+                statusCode: HttpStatusCode.OK,
+                data: deleteResult
+            } 
+        } catch (error: any) {
+            Logger.error(error)
+
+            return {
+                success: false,
+                error: {
+                    message: "Erro inesperado ao deletar orçamento.",
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error.toString(),

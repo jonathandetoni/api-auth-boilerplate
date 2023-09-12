@@ -11,4 +11,6 @@ export type UserDtoList = {
     typeUser: TypeUser
     createdAt: Date;
     updatedAt: Date;
+    deletedAt?: Date;
+    deleted: boolean;
 }

@@ -10,7 +10,7 @@ import { DemandsDtoList } from '../../dtos/DataBasic/Demands/Demands/DemandsDtoL
 class DemandsRepository implements IDemandsRepository {
     async create(entity: DemandsDtoCreate): Promise<GeneralResponse> {
         try {
-            const upsertReturn = await prismaClient.demands.create({
+            const createReturn = await prismaClient.demands.create({
                 data: {
                     name: entity.name,
                     description: entity.description,
@@ -42,9 +42,13 @@ class DemandsRepository implements IDemandsRepository {
                                     email: true,
                                     tenant: true,
                                     role: true,
-                                    typeUser: true
+                                    typeUser: true,
+                                    deleted: true,
+                                    deletedAt: true
                                 }
-                            }
+                            },
+                            deleted: true,
+                            deletedAt: true
                         }
                     },
                     owner: {
@@ -54,16 +58,20 @@ class DemandsRepository implements IDemandsRepository {
                             email: true,
                             tenant: true,
                             role: true,
-                            typeUser: true
+                            typeUser: true,
+                            deleted: true,
+                            deletedAt: true
                         }
-                    }
+                    },
+                    deleted: true,
+                    deletedAt: true
                 }
             }) as DemandsDtoCreateResult
 
             return {
                 success: true,
                 statusCode: HttpStatusCode.OK,
-                data: upsertReturn
+                data: createReturn
             }
         } catch (error: any) {
             Logger.error(error);
@@ -111,7 +119,9 @@ class DemandsRepository implements IDemandsRepository {
                                     email: true,
                                     tenant: true,
                                     role: true,
-                                    typeUser: true
+                                    typeUser: true,
+                                    deleted: true,
+                                    deletedAt: true
                                 }
                             }
                         }
@@ -123,9 +133,13 @@ class DemandsRepository implements IDemandsRepository {
                             email: true,
                             tenant: true,
                             role: true,
-                            typeUser: true
+                            typeUser: true,
+                            deleted: true,
+                            deletedAt: true
                         }
-                    }
+                    },
+                    deleted: true,
+                    deletedAt: true
                 }
             }) as DemandsDtoList;
 
@@ -202,6 +216,108 @@ class DemandsRepository implements IDemandsRepository {
                 success: true,
                 statusCode: HttpStatusCode.OK,
                 data: resultRead
+            }
+        } catch (error: any) {
+            Logger.error(error)
+
+            return {
+                success: false,
+                error: {
+                    message: "Erro inesperado ao consultar demanda por dono.",
+                    errorMessage: error.message,
+                    details: [{
+                        errorDetails: error.toString(),
+                        typeError: LogLevelEnum.ERROR    
+                    }]
+                },
+                statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR
+            }
+        }
+    }
+
+    async delete(demandId: string): Promise<GeneralResponse> {
+        try {
+            await prismaClient.budgets.updateMany({
+                where: {
+                    demandId: demandId
+                },
+                data: {
+                    deleted: true,
+                    deletedAt: new Date()
+                }
+            })
+
+            const resultDeleteDemand = await prismaClient.demands.update({
+                where: {
+                    id: demandId
+                },
+                data: {
+                    deleted: true,
+                    deletedAt: new Date(),
+                    budgets: {
+                        updateMany: {
+                            where: {
+
+                            },
+                            data: {
+                                deleted: true,
+                                deletedAt: new Date(),
+                            }
+                        }
+                    }
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    description: true,
+                    status: true,
+                    category: true,
+                    typeService: true,
+                    address: true,
+                    comments: true,
+                    budgets: {
+                        select: {
+                            id: true,
+                            description: true,
+                            status: true,
+                            value: true,
+                            owner: {
+                                select: {
+                                    id: true,
+                                    createdAt: true,
+                                    email: true,
+                                    tenant: true,
+                                    role: true,
+                                    typeUser: true,
+                                    deleted: true,
+                                    deletedAt: true
+                                }
+                            },
+                            deleted: true,
+                            deletedAt: true
+                        }
+                    }, 
+                    owner: {
+                        select: {
+                            id: true,
+                            createdAt: true,
+                            email: true,
+                            tenant: true,
+                            role: true,
+                            typeUser: true,
+                            deleted: true,
+                            deletedAt: true
+                        }
+                    },
+                    deleted: true,
+                    deletedAt: true
+                }
+            }) as DemandsDtoList;
+
+            return {
+                success: true,
+                statusCode: HttpStatusCode.OK,
+                data: resultDeleteDemand
             }
         } catch (error: any) {
             Logger.error(error)

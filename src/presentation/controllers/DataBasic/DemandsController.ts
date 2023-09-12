@@ -77,6 +77,35 @@ class DemandsController {
             return response.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(result);
         }
     }
+
+    async delete(request: Request<{demandId: string}>, response: Response): Promise<Response> {
+        try {
+            const { demandId } = request.params;
+            const result = await this._service.delete(demandId)
+
+            if(!result.success){
+                return response.status(result.statusCode).json(result);
+            }
+
+            return response.status(HttpStatusCode.OK).json(result);
+        } catch (error: any) {
+            let result: GeneralResponse = {
+                success: false,
+                statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+                error: {
+                    message: 'Erro inesperado!',
+                    errorMessage: error.message,
+                    details: [{
+                        errorDetails: error
+                    }]
+                }
+            }
+
+            Logger.error(error)
+            
+            return response.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(result);
+        }
+    }
 }
 
 export { DemandsController }

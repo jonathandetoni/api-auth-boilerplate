@@ -6,4 +6,5 @@ export interface IBudgetsService {
     read(id: string) : Promise<GeneralResponse>;
     readByOwnerId(ownerId: string): Promise<GeneralResponse>;
     readByDemandId(demandId: string): Promise<GeneralResponse>;
+    delete(budgetId: string): Promise<GeneralResponse>;
 }

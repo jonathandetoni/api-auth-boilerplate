@@ -16,4 +16,6 @@ export type DemandsDtoList = {
     budgets: BudgetsDtoList[];
     createdAt: Date;
     updatedAt: Date;
+    deletedAt?: Date;
+    deleted: boolean;
 }

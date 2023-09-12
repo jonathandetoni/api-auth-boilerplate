@@ -14,4 +14,6 @@ export type DemandsDtoCreateResult = {
     comments: object[];
     budgets: BudgetsDtoList[];
     createdAt: Date;
+    deleted: boolean,
+    deletedAt: Date;
 }

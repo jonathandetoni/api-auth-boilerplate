@@ -9,5 +9,7 @@ export type BudgetsDtoCreateResult = {
     value: string;
     owner: UserDtoList;
     demand: DemandsDtoList;
-    createdAt: Date;  
+    createdAt: Date;
+    deleted: boolean;
+    deletedAt: Date;
 }

@@ -4,4 +4,6 @@ export type TenantDtoList= {
   description: string;
   createdAt: Date;  
   updatedAt: Date;
+  deletedAt?: Date;
+  deleted: boolean;
 }

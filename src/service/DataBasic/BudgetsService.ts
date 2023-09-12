@@ -25,6 +25,10 @@ class BudgetsService implements IBudgetsService {
   async readByDemandId(demandId: string): Promise<GeneralResponse> {
     return await this._budgetsRepository.readByDemandId(demandId);
   }
+
+  async delete(budgetId: string): Promise<GeneralResponse> {
+    return await this._budgetsRepository.delete(budgetId);
+  }
 }
 
 export { BudgetsService }

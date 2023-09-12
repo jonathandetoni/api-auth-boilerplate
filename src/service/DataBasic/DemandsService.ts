@@ -9,6 +9,9 @@ class DemandsService implements IDemandsService {
   constructor(demandsRespository: IDemandsRepository) {
     this._demandsRepository = demandsRespository;
   }
+  async delete(demandId: string): Promise<GeneralResponse> {
+    return await this._demandsRepository.delete(demandId)
+  }
 
   async create(entity: DemandsDtoCreate): Promise<GeneralResponse> {
     return await this._demandsRepository.create(entity);
