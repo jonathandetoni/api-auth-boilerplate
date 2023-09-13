@@ -79,20 +79,28 @@ class BudgetsController {
 
             Logger.error(error)
             
-            return response.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(result);
+            return response.status(result.statusCode).json(result);
         }
     }
 
-    async delete(request: Request<{budgetId: string}>, response: Response): Promise<Response> {
+    async update(request: Request<{}, {}, BudgetsDtoCreate>, response: Response) : Promise<Response> {
         try {
-            const { budgetId } = request.params;
-            const result = await this._service.delete(budgetId)
+            const entity: BudgetsDtoCreate = request.body;
 
-            if(!result.success){
-                return response.status(result.statusCode).json(result);
+            if (!entity.id) {
+                let result: GeneralResponse = {
+                    statusCode: HttpStatusCode.BAD_REQUEST,
+                    success: false,
+                    error: {
+                        message: "Para atualizar o orçamento é preciso enviar o id."
+                    }
+                }
+
+                return response.status(result.statusCode).json(result)
             }
+            const result = await this._service.update(entity);
 
-            return response.status(HttpStatusCode.OK).json(result);
+            return response.status(result.statusCode).json(result);
         } catch (error: any) {
             let result: GeneralResponse = {
                 success: false,
@@ -108,7 +116,36 @@ class BudgetsController {
 
             Logger.error(error)
             
-            return response.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(result);
+            return response.status(result.statusCode).json(result);
+        }
+    }
+
+    async delete(request: Request<{budgetId: string}>, response: Response): Promise<Response> {
+        try {
+            const { budgetId } = request.params;
+            const result = await this._service.delete(budgetId)
+
+            if(!result.success){
+                return response.status(result.statusCode).json(result);
+            }
+
+            return response.status(result.statusCode).json(result);
+        } catch (error: any) {
+            let result: GeneralResponse = {
+                success: false,
+                statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+                error: {
+                    message: 'Erro inesperado!',
+                    errorMessage: error.message,
+                    details: [{
+                        errorDetails: error
+                    }]
+                }
+            }
+
+            Logger.error(error)
+            
+            return response.status(result.statusCode).json(result);
         }
     }
 }

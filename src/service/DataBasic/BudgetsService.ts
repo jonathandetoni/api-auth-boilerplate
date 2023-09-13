@@ -26,6 +26,10 @@ class BudgetsService implements IBudgetsService {
     return await this._budgetsRepository.readByDemandId(demandId);
   }
 
+  async update(entity: BudgetsDtoCreate): Promise<GeneralResponse> {
+    return await this._budgetsRepository.update(entity);
+  }
+
   async delete(budgetId: string): Promise<GeneralResponse> {
     return await this._budgetsRepository.delete(budgetId);
   }
