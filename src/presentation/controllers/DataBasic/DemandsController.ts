@@ -13,17 +13,19 @@ class DemandsController {
     }
 
     async create(request: Request<{}, {}, DemandsDtoCreate>, response: Response) : Promise<Response> {
+        let result: GeneralResponse;
+
         try {
             const entity: DemandsDtoCreate = request.body;
-            const result = await this._service.create(entity);
+            result = await this._service.create(entity);
 
-            return response.status(HttpStatusCode.OK).json(result);
+            return response.status(result.statusCode).json(result);
         } catch (error: any) {
             let result: GeneralResponse = {
                 success: false,
                 statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
                 error: {
-                    message: 'Erro inesperado!',
+                    message: 'Erro inesperado ao cadastrar demanda!',
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error
@@ -33,17 +35,19 @@ class DemandsController {
 
             Logger.error(error)
             
-            return response.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(result);
+            return response.status(result.statusCode).json(result);
         }
     }
 
     async read(request: Request<{}, {}, {}, {id: string, ownerId: string}>, response: Response) : Promise<Response> {
+        let result: GeneralResponse;
+
         try {
             const id = request.query.id
             const ownerId = request.query.ownerId
 
             if(ownerId == null && id == null){
-                let result: GeneralResponse = {
+                result = {
                     success: false,
                     statusCode: HttpStatusCode.BAD_REQUEST,
                     error: {
@@ -51,20 +55,22 @@ class DemandsController {
                     }
                 }
                 
-                return response.status(HttpStatusCode.BAD_REQUEST).json(result);
+                return response.status(result.statusCode).json(result);
             }
 
             if(id != null){
-                return response.status(HttpStatusCode.OK).json(await this._service.read(id));
+                result = await this._service.read(id);
+                return response.status(result.statusCode).json(result);
             }
 
-            return response.status(HttpStatusCode.OK).json(await this._service.readByOwnerId(ownerId));
+            result = await this._service.readByOwnerId(ownerId);
+            return response.status(result.statusCode).json(result);
         } catch (error: any) {
-            let result: GeneralResponse = {
+            result = {
                 success: false,
                 statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
                 error: {
-                    message: 'Erro inesperado!',
+                    message: 'Erro inesperado ao consultar demanda!',
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error
@@ -74,26 +80,28 @@ class DemandsController {
 
             Logger.error(error)
             
-            return response.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(result);
+            return response.status(result.statusCode).json(result);
         }
     }
 
     async delete(request: Request<{demandId: string}>, response: Response): Promise<Response> {
+        let result: GeneralResponse
+
         try {
             const { demandId } = request.params;
-            const result = await this._service.delete(demandId)
+            result = await this._service.delete(demandId)
 
             if(!result.success){
                 return response.status(result.statusCode).json(result);
             }
 
-            return response.status(HttpStatusCode.OK).json(result);
+            return response.status(result.statusCode).json(result);
         } catch (error: any) {
-            let result: GeneralResponse = {
+            result = {
                 success: false,
                 statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
                 error: {
-                    message: 'Erro inesperado!',
+                    message: 'Erro inesperado ao deletar demanda!',
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error
@@ -103,7 +111,34 @@ class DemandsController {
 
             Logger.error(error)
             
-            return response.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(result);
+            return response.status(result.statusCode).json(result);
+        }
+    }
+
+    async update(request: Request<{}, {}, DemandsDtoCreate>, response: Response): Promise<Response> { 
+        let result: GeneralResponse;
+        
+        try {
+            const entity: DemandsDtoCreate = request.body;
+            result = await this._service.update(entity);
+
+            return response.status(result.statusCode).json(result);
+        } catch (error: any) {
+            result = {
+                success: false,
+                statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+                error: {
+                    message: 'Erro inesperado ao atualizar demanda!',
+                    errorMessage: error.message,
+                    details: [{
+                        errorDetails: error
+                    }]
+                }
+            }
+
+            Logger.error(error);
+
+            return response.status(result.statusCode).json(result);
         }
     }
 }

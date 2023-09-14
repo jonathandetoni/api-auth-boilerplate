@@ -17,7 +17,7 @@ class BudgetsController {
             const entity: BudgetsDtoCreate = request.body;
             const result = await this._service.create(entity);
 
-            return response.status(HttpStatusCode.OK).json(result);
+            return response.status(result.statusCode).json(result);
         } catch (error: any) {
             let result: GeneralResponse = {
                 success: false,
@@ -33,7 +33,7 @@ class BudgetsController {
 
             Logger.error(error)
             
-            return response.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json(result);
+            return response.status(result.statusCode).json(result);
         }
     }
 
@@ -42,9 +42,10 @@ class BudgetsController {
             const id = request.query.id
             const ownerId = request.query.ownerId
             const demandId = request.query.demandId
+            let result: GeneralResponse;
             
             if(ownerId == null && id == null && demandId == null){
-                let result: GeneralResponse = {
+                result = {
                     success: false,
                     statusCode: HttpStatusCode.BAD_REQUEST,
                     error: {
@@ -52,18 +53,21 @@ class BudgetsController {
                     }
                 }
                 
-                return response.status(HttpStatusCode.BAD_REQUEST).json(result);
+                return response.status(result.statusCode).json(result);
             }
 
             if(id != null){
-                return response.status(HttpStatusCode.OK).json(await this._service.read(id));
+                result = await this._service.read(id)
+                return response.status(result.statusCode).json(result);
             } 
 
             if(ownerId != null){
-                return response.status(HttpStatusCode.OK).json(await this._service.readByOwnerId(ownerId)); 
+                result = await this._service.readByOwnerId(ownerId);
+                return response.status(result.statusCode).json(result); 
             }
 
-            return response.status(HttpStatusCode.OK).json(await this._service.readByDemandId(demandId));
+            result = await this._service.readByDemandId(demandId)
+            return response.status(result.statusCode).json(result);
         } catch (error: any) {
             let result: GeneralResponse = {
                 success: false,

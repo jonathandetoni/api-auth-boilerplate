@@ -15,6 +15,10 @@ demandsRouter.post('/demands', validationToken,(request: Request<{}, {}, Demands
     return demandsController.create(request, response);
 });
 
+demandsRouter.put('/demands', validationToken,(request: Request<{}, {}, DemandsDtoCreate>, response: Response) => {
+    return demandsController.update(request, response);
+});
+
 demandsRouter.post('/demands/:demandId', validationToken,(request: Request<{demandId: string}>, response: Response) => {
     return demandsController.delete(request, response);
 });

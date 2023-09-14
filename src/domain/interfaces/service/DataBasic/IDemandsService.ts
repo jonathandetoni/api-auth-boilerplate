@@ -7,4 +7,5 @@ export interface IDemandsService {
     read(id: string) : Promise<GeneralResponse>;
     readByOwnerId(ownerId: string): Promise<GeneralResponse>;
     delete(demandId: string): Promise<GeneralResponse>;
+    update(entity: DemandsDtoCreate): Promise<GeneralResponse>;
 }

@@ -235,6 +235,92 @@ class DemandsRepository implements IDemandsRepository {
         }
     }
 
+    async update(entity: DemandsDtoCreate): Promise<GeneralResponse> {
+        try {
+            const resultUpdate = await prismaClient.demands.update({
+                where: {
+                    id: entity.id,
+                },
+                data: {
+                    name: entity.name,
+                    description: entity.description,
+                    status: entity.status,
+                    category: entity.category,
+                    typeService: entity.typeService,
+                    addressId: entity.addressId,
+                    ownerId: entity.ownerId
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    description: true,
+                    status: true,
+                    category: true,
+                    typeService: true,
+                    address: true,
+                    comments: true,
+                    budgets: {
+                        select: {
+                            id: true,
+                            description: true,
+                            status: true,
+                            value: true,
+                            owner: {
+                                select: {
+                                    id: true,
+                                    createdAt: true,
+                                    email: true,
+                                    tenant: true,
+                                    role: true,
+                                    typeUser: true,
+                                    deleted: true,
+                                    deletedAt: true
+                                }
+                            },
+                            deleted: true,
+                            deletedAt: true
+                        }
+                    }, 
+                    owner: {
+                        select: {
+                            id: true,
+                            createdAt: true,
+                            email: true,
+                            tenant: true,
+                            role: true,
+                            typeUser: true,
+                            deleted: true,
+                            deletedAt: true
+                        }
+                    },
+                    deleted: true,
+                    deletedAt: true
+                }
+            }) as DemandsDtoList;
+
+            return {
+                success: true,
+                statusCode: HttpStatusCode.OK,
+                data: resultUpdate
+            }
+        } catch (error: any) { 
+            Logger.error(error)
+
+            return {
+                success: false,
+                error: {
+                    message: "Erro inesperado ao atualizar demanda.",
+                    errorMessage: error.message,
+                    details: [{
+                        errorDetails: error.toString(),
+                        typeError: LogLevelEnum.ERROR    
+                    }]
+                },
+                statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR
+            }
+        }
+    }
+
     async delete(demandId: string): Promise<GeneralResponse> {
         try {
             await prismaClient.budgets.updateMany({
