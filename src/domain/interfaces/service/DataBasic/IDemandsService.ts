@@ -8,4 +8,5 @@ export interface IDemandsService {
     readByOwnerId(ownerId: string): Promise<GeneralResponse>;
     delete(demandId: string): Promise<GeneralResponse>;
     update(entity: DemandsDtoCreate): Promise<GeneralResponse>;
+    acceptBudget(demandId: string, budgetId: string): Promise<GeneralResponse>;
 }

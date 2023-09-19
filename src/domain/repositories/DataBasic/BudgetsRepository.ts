@@ -6,6 +6,7 @@ import { IBudgetsRepository } from '../../interfaces/repository/DataBasic/IBudge
 import { BudgetsDtoCreate } from '../../dtos/DataBasic/Demands/Budgets/BudgetsDtoCreate';
 import { BudgetsDtoCreateResult } from '../../dtos/DataBasic/Demands/Budgets/result/BudgetsDtoCreateResult';
 import { BudgetsDtoList } from '../../dtos/DataBasic/Demands/Budgets/BudgetsDtoList';
+import { StatusBudgets } from '../../../infrastructure/utils/constants/statusBudgets';
 
 class BudgetsRepository implements IBudgetsRepository {
     async create(entity: BudgetsDtoCreate): Promise<GeneralResponse> {
@@ -77,7 +78,7 @@ class BudgetsRepository implements IBudgetsRepository {
             return {
                 success: false,
                 error: {
-                    message: "Erro inesperado ao criar orçamento.",
+                    message: "Erro inesperado ao criar orçamento!",
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error.toString(),
@@ -143,7 +144,7 @@ class BudgetsRepository implements IBudgetsRepository {
             return {
                 success: false,
                 error: {
-                    message: "Erro inesperado ao consultar orçamento.",
+                    message: "Erro inesperado ao consultar orçamento!",
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error.toString(),
@@ -220,7 +221,7 @@ class BudgetsRepository implements IBudgetsRepository {
             return {
                 success: false,
                 error: {
-                    message: "Erro inesperado ao consultar orçamento por dono.",
+                    message: "Erro inesperado ao consultar orçamento por dono!",
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error.toString(),
@@ -320,7 +321,7 @@ class BudgetsRepository implements IBudgetsRepository {
             return {
                 success: false,
                 error: {
-                    message: "Erro inesperado ao consultar orçamento por demanda.",
+                    message: "Erro inesperado ao consultar orçamento por demanda!",
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error.toString(),
@@ -331,6 +332,110 @@ class BudgetsRepository implements IBudgetsRepository {
             }
         }
     }
+
+    async updateStatus(budgetId: string, status: StatusBudgets): Promise<GeneralResponse> {
+        try {
+            const resultUpdate = await prismaClient.budgets.update({
+                where: {
+                    id: budgetId
+                },
+                data: {
+                    status: status
+                },
+                select: {
+                    id: true,
+                    createdAt: true,
+                    description: true,
+                    status: true,
+                    value: true,
+                    demand: {
+                        select: {
+                            id: true,
+                            name: true,
+                            description: true,
+                            status: true,
+                            category: true,
+                            typeService: true,
+                            address: true,
+                            comments: true,
+                            budgets: {
+                                select: {
+                                    id: true,
+                                    description: true,
+                                    status: true,
+                                    value: true,
+                                    owner: {
+                                        select: {
+                                            id: true,
+                                            createdAt: true,
+                                            email: true,
+                                            tenant: true,
+                                            role: true,
+                                            typeUser: true,
+                                            deleted: true,
+                                            deletedAt: true
+                                        }
+                                    },
+                                    deleted: true,
+                                    deletedAt: true
+                                }
+                            },
+                            owner: {
+                                select: {
+                                    id: true,
+                                    createdAt: true,
+                                    email: true,
+                                    tenant: true,
+                                    role: true,
+                                    typeUser: true,
+                                    deleted: true,
+                                    deletedAt: true
+                                }
+                            },
+                            deleted: true,
+                            deletedAt: true
+                        }
+                    },
+                    owner: {
+                        select: {
+                            id: true,
+                            createdAt: true,
+                            email: true,
+                            tenant: true,
+                            role: true,
+                            typeUser: true,
+                            deleted: true,
+                            deletedAt: true
+                        }
+                    },
+                    deleted: true,
+                    deletedAt: true
+                }
+            }) as BudgetsDtoList;
+
+            return {
+                success: true,
+                statusCode: HttpStatusCode.OK,
+                data: resultUpdate
+            }
+        } catch (error: any) {
+            Logger.error(error);
+
+            return {
+                success: false,
+                error: {
+                    message: "Erro inesperado ao atualizar status do orçamento para aceito!",
+                    errorMessage: error.message,
+                    details: [{
+                        errorDetails: error.toString(),
+                        typeError: LogLevelEnum.ERROR    
+                    }]
+                },
+                statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR
+            }
+        }
+    }
+
     async update(entity: BudgetsDtoCreate): Promise<GeneralResponse> {
         try {
             const createReturn = await prismaClient.budgets.update({
@@ -403,7 +508,7 @@ class BudgetsRepository implements IBudgetsRepository {
             return {
                 success: false,
                 error: {
-                    message: "Erro inesperado ao atualizar orçamento.",
+                    message: "Erro inesperado ao atualizar orçamento!",
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error.toString(),
@@ -507,7 +612,7 @@ class BudgetsRepository implements IBudgetsRepository {
             return {
                 success: false,
                 error: {
-                    message: "Erro inesperado ao deletar orçamento.",
+                    message: "Erro inesperado ao deletar orçamento!",
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error.toString(),

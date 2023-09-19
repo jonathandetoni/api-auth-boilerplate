@@ -1,3 +1,4 @@
+import { StatusDemands } from "../../../../infrastructure/utils/constants/statusDemands";
 import { DemandsDtoCreate } from "../../../dtos/DataBasic/Demands/Demands/DemandsDtoCreate";
 import { GeneralResponse } from "../../service/generalResponse";
 
@@ -7,4 +8,5 @@ export interface IDemandsRepository {
     readByOwnerId(ownerId: string): Promise<GeneralResponse>;
     delete(budgetId: string): Promise<GeneralResponse>;
     update(entity: DemandsDtoCreate): Promise<GeneralResponse>;
+    updateStatus(demandId: string, status: StatusDemands): Promise<GeneralResponse>;
 }

@@ -2,6 +2,7 @@ import { BudgetsDtoCreate } from "../../domain/dtos/DataBasic/Demands/Budgets/Bu
 import { IBudgetsRepository } from "../../domain/interfaces/repository/DataBasic/IBudgetsRepository";
 import { IBudgetsService } from "../../domain/interfaces/service/DataBasic/IBudgetsService";
 import { GeneralResponse } from "../../domain/interfaces/service/generalResponse";
+import { StatusBudgets } from "../../infrastructure/utils/constants/statusBudgets";
 
 class BudgetsService implements IBudgetsService {
   private readonly _budgetsRepository: IBudgetsRepository;
@@ -32,6 +33,10 @@ class BudgetsService implements IBudgetsService {
 
   async delete(budgetId: string): Promise<GeneralResponse> {
     return await this._budgetsRepository.delete(budgetId);
+  }
+
+  async updateStatus(budgetId: string, status: StatusBudgets): Promise<GeneralResponse> {
+    return await this._budgetsRepository.updateStatus(budgetId, status);
   }
 }
 

@@ -141,6 +141,33 @@ class DemandsController {
             return response.status(result.statusCode).json(result);
         }
     }
+
+    async acceptBudget(request: Request<{demandId: string, budgetId: string}>, response: Response): Promise<Response> {
+        let result: GeneralResponse;
+        
+        try {
+            const { demandId, budgetId } = request.params;
+            result = await this._service.acceptBudget(demandId, budgetId);
+
+            return response.status(result.statusCode).json(result);
+        } catch (error: any) {
+            result = {
+                success: false,
+                statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+                error: {
+                    message: 'Erro inesperado ao aceitar orçamento da demanda!',
+                    errorMessage: error.message,
+                    details: [{
+                        errorDetails: error
+                    }]
+                }
+            }
+
+            Logger.error(error);
+
+            return response.status(result.statusCode).json(result);
+        }
+    }
 }
 
 export { DemandsController }

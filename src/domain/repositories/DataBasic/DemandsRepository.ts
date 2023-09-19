@@ -6,6 +6,7 @@ import { IDemandsRepository } from '../../interfaces/repository/DataBasic/IDeman
 import { DemandsDtoCreateResult } from '../../dtos/DataBasic/Demands/Demands/result/DemandsDtoCreateResult';
 import { DemandsDtoCreate } from '../../dtos/DataBasic/Demands/Demands/DemandsDtoCreate';
 import { DemandsDtoList } from '../../dtos/DataBasic/Demands/Demands/DemandsDtoList';
+import { StatusDemands } from '../../../infrastructure/utils/constants/statusDemands';
 
 class DemandsRepository implements IDemandsRepository {
     async create(entity: DemandsDtoCreate): Promise<GeneralResponse> {
@@ -310,6 +311,86 @@ class DemandsRepository implements IDemandsRepository {
                 success: false,
                 error: {
                     message: "Erro inesperado ao atualizar demanda.",
+                    errorMessage: error.message,
+                    details: [{
+                        errorDetails: error.toString(),
+                        typeError: LogLevelEnum.ERROR    
+                    }]
+                },
+                statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR
+            }
+        }
+    }
+
+    async updateStatus(demandId: string, status: StatusDemands): Promise<GeneralResponse> {
+        try {
+            const resultUpdate = await prismaClient.demands.update({
+                where: {
+                    id: demandId
+                },
+                data: {
+                    status: status
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    description: true,
+                    status: true,
+                    category: true,
+                    typeService: true,
+                    address: true,
+                    comments: true,
+                    budgets: {
+                        select: {
+                            id: true,
+                            description: true,
+                            status: true,
+                            value: true,
+                            owner: {
+                                select: {
+                                    id: true,
+                                    createdAt: true,
+                                    email: true,
+                                    tenant: true,
+                                    role: true,
+                                    typeUser: true,
+                                    deleted: true,
+                                    deletedAt: true
+                                }
+                            },
+                            deleted: true,
+                            deletedAt: true
+                        }
+                    }, 
+                    owner: {
+                        select: {
+                            id: true,
+                            createdAt: true,
+                            email: true,
+                            tenant: true,
+                            role: true,
+                            typeUser: true,
+                            deleted: true,
+                            deletedAt: true
+                        }
+                    },
+                    deleted: true,
+                    deletedAt: true
+                }
+            }) as DemandsDtoList;
+
+            return {
+                success: true,
+                statusCode: HttpStatusCode.OK,
+                data: resultUpdate
+            }
+        } catch (error: any) { 
+            Logger.error(error)
+
+            return {
+                success: false,
+                error: {
+                    message: "Erro inesperado ao atualizar status da demanda.",
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error.toString(),

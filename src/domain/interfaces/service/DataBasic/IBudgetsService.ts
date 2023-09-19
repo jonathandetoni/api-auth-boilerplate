@@ -1,3 +1,4 @@
+import { StatusBudgets } from "../../../../infrastructure/utils/constants/statusBudgets";
 import { BudgetsDtoCreate } from "../../../dtos/DataBasic/Demands/Budgets/BudgetsDtoCreate";
 import { GeneralResponse } from "../generalResponse";
 
@@ -8,4 +9,5 @@ export interface IBudgetsService {
     readByDemandId(demandId: string): Promise<GeneralResponse>;
     update(entity: BudgetsDtoCreate): Promise<GeneralResponse>;
     delete(budgetId: string): Promise<GeneralResponse>;
+    updateStatus(budgetId: string, status: StatusBudgets): Promise<GeneralResponse>;
 }

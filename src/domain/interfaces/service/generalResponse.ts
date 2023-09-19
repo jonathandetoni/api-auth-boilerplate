@@ -14,7 +14,7 @@ interface error {
 }
 
 export interface errorDetails {
-  errorDetails: string;
+  errorDetails: string | object;
   label?: string;
   typeError?: LogLevelEnum;
 }
