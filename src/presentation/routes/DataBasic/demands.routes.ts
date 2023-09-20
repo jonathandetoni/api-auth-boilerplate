@@ -24,7 +24,7 @@ demandsRouter.put('/demands', validationToken,(request: Request<{}, {}, DemandsD
     return demandsController.update(request, response);
 });
 
-demandsRouter.post('/demands/:demandId/accept_budget/:budgetId', validationToken,(request: Request<{demandId: string, budgetId: string}>, response: Response) => {
+demandsRouter.post('/demands/:demandId/budgets/:budgetId/accept', validationToken,(request: Request<{demandId: string, budgetId: string}>, response: Response) => {
     return demandsController.acceptBudget(request, response);
 });
 
