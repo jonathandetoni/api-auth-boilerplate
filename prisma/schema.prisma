@@ -156,6 +156,7 @@ model BudgetItems {
   name String @db.VarChar(255)
   description String @db.Text
   value String @db.VarChar(255)
+  status StatusBudgetItems @default(SENT)
 
   budget Budgets @relation(fields: [budgetId], references: [id])
   budgetId String @db.Uuid 
@@ -198,6 +199,13 @@ enum StatusDemands {
 }
 
 enum StatusBudgets {
+  SENT
+  OPEN
+  REFUSED
+  ACCEPTED
+}
+
+enum StatusBudgetItems {
   SENT
   OPEN
   REFUSED

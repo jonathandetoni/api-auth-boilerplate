@@ -5,6 +5,9 @@ CREATE TYPE "StatusDemands" AS ENUM ('NEW', 'OPEN_BUDGETS', 'RECEIVED_BUDGETS', 
 CREATE TYPE "StatusBudgets" AS ENUM ('SENT', 'OPEN', 'REFUSED', 'ACCEPTED');
 
 -- CreateEnum
+CREATE TYPE "StatusBudgetItems" AS ENUM ('SENT', 'OPEN', 'REFUSED', 'ACCEPTED');
+
+-- CreateEnum
 CREATE TYPE "TypeUsers" AS ENUM ('USER', 'ADMIN', 'COMMON', 'PROFESSIONAL', 'ADMINISTRATOR');
 
 -- CreateEnum
@@ -125,6 +128,7 @@ CREATE TABLE "budgets-items" (
     "name" VARCHAR(255) NOT NULL,
     "description" TEXT NOT NULL,
     "value" VARCHAR(255) NOT NULL,
+    "status" "StatusBudgetItems" NOT NULL DEFAULT 'SENT',
     "budgetId" UUID NOT NULL,
 
     CONSTRAINT "budgets-items_pkey" PRIMARY KEY ("id")
