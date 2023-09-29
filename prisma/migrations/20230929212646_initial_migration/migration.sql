@@ -106,13 +106,28 @@ CREATE TABLE "budgets" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "deletedAt" TIMESTAMP(3),
     "deleted" BOOLEAN NOT NULL DEFAULT false,
-    "description" VARCHAR(255) NOT NULL,
+    "description" TEXT NOT NULL,
     "status" "StatusBudgets" NOT NULL DEFAULT 'SENT',
     "value" VARCHAR(255) NOT NULL,
     "ownerId" UUID NOT NULL,
     "demandId" UUID NOT NULL,
 
     CONSTRAINT "budgets_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "budgets-items" (
+    "id" UUID NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "deletedAt" TIMESTAMP(3),
+    "deleted" BOOLEAN NOT NULL DEFAULT false,
+    "name" VARCHAR(255) NOT NULL,
+    "description" TEXT NOT NULL,
+    "value" VARCHAR(255) NOT NULL,
+    "budgetId" UUID NOT NULL,
+
+    CONSTRAINT "budgets-items_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -165,6 +180,9 @@ CREATE UNIQUE INDEX "demands_id_key" ON "demands"("id");
 CREATE UNIQUE INDEX "budgets_id_key" ON "budgets"("id");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "budgets-items_id_key" ON "budgets-items"("id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "comments_id_key" ON "comments"("id");
 
 -- CreateIndex
@@ -193,6 +211,9 @@ ALTER TABLE "budgets" ADD CONSTRAINT "budgets_ownerId_fkey" FOREIGN KEY ("ownerI
 
 -- AddForeignKey
 ALTER TABLE "budgets" ADD CONSTRAINT "budgets_demandId_fkey" FOREIGN KEY ("demandId") REFERENCES "demands"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "budgets-items" ADD CONSTRAINT "budgets-items_budgetId_fkey" FOREIGN KEY ("budgetId") REFERENCES "budgets"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "comments" ADD CONSTRAINT "comments_parentCommentId_fkey" FOREIGN KEY ("parentCommentId") REFERENCES "comments"("id") ON DELETE SET NULL ON UPDATE CASCADE;

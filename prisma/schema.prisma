@@ -131,9 +131,11 @@ model Budgets {
   deletedAt DateTime?
   deleted Boolean @db.Boolean @default(false)
 
-  description String @db.VarChar(255)
+  description String @db.Text
   status StatusBudgets @default(SENT)
   value String @db.VarChar(255)
+
+  budgetItems BudgetItems[]
 
   owner Users @relation(fields: [ownerId], references: [id])
   ownerId String @db.Uuid
@@ -142,6 +144,23 @@ model Budgets {
   demandId String @db.Uuid 
 
   @@map("budgets")
+}
+
+model BudgetItems {
+  id String @id @default(uuid()) @db.Uuid @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+  deleted Boolean @db.Boolean @default(false)
+
+  name String @db.VarChar(255)
+  description String @db.Text
+  value String @db.VarChar(255)
+
+  budget Budgets @relation(fields: [budgetId], references: [id])
+  budgetId String @db.Uuid 
+
+  @@map("budgets-items")
 }
 
 model Comments {
