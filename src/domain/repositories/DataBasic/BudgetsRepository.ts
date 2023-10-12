@@ -17,7 +17,12 @@ class BudgetsRepository implements IBudgetsRepository {
                 status: entity.status,
                 value: entity.value,
                 ownerId: entity.ownerId,
-                demandId: entity.demandId
+                demandId: entity.demandId,
+                budgetItems: {
+                    createMany: {
+                        data: entity.budgetItems
+                    },
+                }
               },
               select: {
                 id: true,
@@ -58,6 +63,19 @@ class BudgetsRepository implements IBudgetsRepository {
                         tenant: true,
                         role: true,
                         typeUser: true,
+                        deleted: true,
+                        deletedAt: true
+                    }
+                },
+                budgetItems: {
+                    select: {
+                        id: true,
+                        name: true,
+                        description: true,
+                        status: true,
+                        value: true,
+                        budgetId: true,
+                        createdAt: true,
                         deleted: true,
                         deletedAt: true
                     }
@@ -126,6 +144,19 @@ class BudgetsRepository implements IBudgetsRepository {
                             tenant: true,
                             role: true,
                             typeUser: true
+                        }
+                    },
+                    budgetItems: {
+                        select: {
+                            id: true,
+                            name: true,
+                            description: true,
+                            status: true,
+                            value: true,
+                            budget: false,
+                            createdAt: true,
+                            deleted: true,
+                            deletedAt: true
                         }
                     },
                     deleted: true,
@@ -201,6 +232,19 @@ class BudgetsRepository implements IBudgetsRepository {
                             tenant: true,
                             role: true,
                             typeUser: true,
+                            deleted: true,
+                            deletedAt: true
+                        }
+                    },
+                    budgetItems: {
+                        select: {
+                            id: true,
+                            name: true,
+                            description: true,
+                            status: true,
+                            value: true,
+                            budget: false,
+                            createdAt: true,
                             deleted: true,
                             deletedAt: true
                         }
@@ -301,6 +345,19 @@ class BudgetsRepository implements IBudgetsRepository {
                             tenant: true,
                             role: true,
                             typeUser: true,
+                            deleted: true,
+                            deletedAt: true
+                        }
+                    },
+                    budgetItems: {
+                        select: {
+                            id: true,
+                            name: true,
+                            description: true,
+                            status: true,
+                            value: true,
+                            budget: false,
+                            createdAt: true,
                             deleted: true,
                             deletedAt: true
                         }
@@ -408,6 +465,19 @@ class BudgetsRepository implements IBudgetsRepository {
                             deletedAt: true
                         }
                     },
+                    budgetItems: {
+                        select: {
+                            id: true,
+                            name: true,
+                            description: true,
+                            status: true,
+                            value: true,
+                            budget: false,
+                            createdAt: true,
+                            deleted: true,
+                            deletedAt: true
+                        }
+                    },
                     deleted: true,
                     deletedAt: true
                 }
@@ -488,6 +558,19 @@ class BudgetsRepository implements IBudgetsRepository {
                         tenant: true,
                         role: true,
                         typeUser: true,
+                        deleted: true,
+                        deletedAt: true
+                    }
+                },
+                budgetItems: {
+                    select: {
+                        id: true,
+                        name: true,
+                        description: true,
+                        status: true,
+                        value: true,
+                        budget: false,
+                        createdAt: true,
                         deleted: true,
                         deletedAt: true
                     }
@@ -592,6 +675,19 @@ class BudgetsRepository implements IBudgetsRepository {
                             tenant: true,
                             role: true,
                             typeUser: true,
+                            deleted: true,
+                            deletedAt: true
+                        }
+                    },
+                    budgetItems: {
+                        select: {
+                            id: true,
+                            name: true,
+                            description: true,
+                            status: true,
+                            value: true,
+                            budget: false,
+                            createdAt: true,
                             deleted: true,
                             deletedAt: true
                         }
