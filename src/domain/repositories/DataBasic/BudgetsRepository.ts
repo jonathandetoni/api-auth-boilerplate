@@ -189,7 +189,7 @@ class BudgetsRepository implements IBudgetsRepository {
 
     async readByOwnerId(ownerId: string): Promise<GeneralResponse> {
         try {
-            const resultRead = await prismaClient.budgets.findFirstOrThrow({
+            const resultRead = await prismaClient.budgets.findMany({
                 where: {
                     ownerId: ownerId
                 },
@@ -252,7 +252,7 @@ class BudgetsRepository implements IBudgetsRepository {
                     deleted: true,
                     deletedAt: true
                 }
-            }) as BudgetsDtoList;
+            }) as BudgetsDtoList[];
 
             return {
                 success: true,
@@ -279,7 +279,7 @@ class BudgetsRepository implements IBudgetsRepository {
 
     async readByDemandId(demandId: string): Promise<GeneralResponse> {
         try {
-            const resultRead = await prismaClient.budgets.findFirstOrThrow({
+            const resultRead = await prismaClient.budgets.findMany({
                 where: {
                     demandId: demandId
                 },
@@ -365,7 +365,7 @@ class BudgetsRepository implements IBudgetsRepository {
                     deleted: true,
                     deletedAt: true
                 }
-            }) as BudgetsDtoList;
+            }) as BudgetsDtoList[];
 
             return {
                 success: true,

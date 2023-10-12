@@ -169,7 +169,7 @@ class DemandsRepository implements IDemandsRepository {
 
     async readByOwnerId(ownerId: string): Promise<GeneralResponse> {
         try {
-            const resultRead = await prismaClient.demands.findFirstOrThrow({
+            const resultRead = await prismaClient.demands.findMany({
                 where: {
                     ownerId: ownerId
                 },
@@ -211,7 +211,7 @@ class DemandsRepository implements IDemandsRepository {
                         }
                     }
                 }
-            }) as DemandsDtoList;
+            }) as DemandsDtoList[];
 
             return {
                 success: true,
