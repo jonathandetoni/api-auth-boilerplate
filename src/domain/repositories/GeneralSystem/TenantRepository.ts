@@ -36,7 +36,7 @@ class TenantRepository implements ITenantRepository {
             return {
                 success: false,
                 error: {
-                    message: "Erro inesperado ao criar Tenant.",
+                    message: "Erro inesperado ao criar Tenant!",
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error.toString(),
@@ -66,7 +66,7 @@ class TenantRepository implements ITenantRepository {
             return {
                 success: false,
                 error: {
-                    message: "Erro inesperado ao consultar Tenant.",
+                    message: "Erro inesperado ao consultar Tenant!",
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error.toString(),
@@ -96,7 +96,7 @@ class TenantRepository implements ITenantRepository {
             return {
                 success: false,
                 error: {
-                    message: "Erro inesperado ao consultar Tenant.",
+                    message: "Erro inesperado ao consultar Tenant!",
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error.toString(),

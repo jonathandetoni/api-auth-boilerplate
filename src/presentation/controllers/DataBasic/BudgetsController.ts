@@ -49,7 +49,7 @@ class BudgetsController {
                     success: false,
                     statusCode: HttpStatusCode.BAD_REQUEST,
                     error: {
-                        message: 'Parâmetro id, ownerId ou demandId não encontrado!'
+                        message: 'Parâmetro id, ownerId ou demandId não encontrados!'
                     }
                 }
                 

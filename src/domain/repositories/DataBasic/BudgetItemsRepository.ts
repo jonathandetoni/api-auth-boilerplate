@@ -118,7 +118,7 @@ class BudgetItemsRepository implements IBudgetItemsRepository {
             return {
                 success: false,
                 error: {
-                    message: "Erro inesperado ao criar Tenant.",
+                    message: "Erro inesperado ao criar ou atualizar item de orçamento!",
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error.toString(),
@@ -222,7 +222,7 @@ class BudgetItemsRepository implements IBudgetItemsRepository {
             return {
                 success: false,
                 error: {
-                    message: "Erro inesperado ao criar Tenant.",
+                    message: "Erro inesperado ao consultar item de orçamento!",
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error.toString(),
@@ -321,11 +321,11 @@ class BudgetItemsRepository implements IBudgetItemsRepository {
             return {
                 success: false,
                 error: {
-                    message: "Erro inesperado ao criar Tenant.",
+                    message: "Erro inesperado ao consultar item de orçamento por orçamento!",
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error.toString(),
-                        typeError: LogLevelEnum.ERROR    
+                        typeError: LogLevelEnum.ERROR   
                     }]
                 },
                 statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR
@@ -356,7 +356,7 @@ class BudgetItemsRepository implements IBudgetItemsRepository {
             return {
                 success: false,
                 error: {
-                    message: "Erro inesperado ao criar Tenant.",
+                    message: "Erro inesperado ao deletar item de orçamento!",
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error.toString(),

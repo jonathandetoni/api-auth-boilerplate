@@ -52,7 +52,7 @@ class UserRepository implements IUserRepository {
             return {
                 success: false,
                 error: {
-                    message: "Erro inesperado ao criar Tenant.",
+                    message: "Erro inesperado ao criar usuário!",
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error.toString(),
@@ -90,7 +90,7 @@ class UserRepository implements IUserRepository {
             return {
                 success: false,
                 error: {
-                    message: "Erro inesperado ao criar Tenant.",
+                    message: "Erro inesperado ao consultar usuário!",
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error.toString(),
@@ -128,7 +128,7 @@ class UserRepository implements IUserRepository {
             return {
                 success: false,
                 error: {
-                    message: "Erro inesperado ao criar Tenant.",
+                    message: "Erro inesperado ao consultar usuário por e-mail!",
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error.toString(),
@@ -170,7 +170,7 @@ class UserRepository implements IUserRepository {
             return {
                 success: false,
                 error: {
-                    message: "Erro inesperado ao criar Tenant.",
+                    message: "Erro ao consultar usuário!",
                     errorMessage: error.message,
                     details: [{
                         errorDetails: error.toString(),
