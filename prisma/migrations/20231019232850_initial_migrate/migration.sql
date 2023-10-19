@@ -1,10 +1,4 @@
 -- CreateEnum
-CREATE TYPE "StatusDemands" AS ENUM ('NEW', 'OPEN_BUDGETS', 'RECEIVED_BUDGETS', 'CHOSEN_BUDGETS', 'FINISHED');
-
--- CreateEnum
-CREATE TYPE "StatusBudgets" AS ENUM ('SENT', 'OPEN', 'REFUSED', 'ACCEPTED');
-
--- CreateEnum
 CREATE TYPE "TypeUsers" AS ENUM ('USER', 'ADMIN', 'COMMON', 'PROFESSIONAL', 'ADMINISTRATOR');
 
 -- CreateEnum
@@ -71,50 +65,6 @@ CREATE TABLE "contacts" (
     CONSTRAINT "contacts_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "demands" (
-    "id" UUID NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-    "name" VARCHAR(255) NOT NULL,
-    "description" VARCHAR(255) NOT NULL,
-    "status" "StatusDemands" NOT NULL DEFAULT 'NEW',
-    "category" VARCHAR(255) NOT NULL,
-    "typeService" VARCHAR(255) NOT NULL,
-    "addressId" UUID NOT NULL,
-    "ownerId" UUID NOT NULL,
-
-    CONSTRAINT "demands_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "budgets" (
-    "id" UUID NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-    "description" VARCHAR(255) NOT NULL,
-    "status" "StatusBudgets" NOT NULL DEFAULT 'OPEN',
-    "value" VARCHAR(255) NOT NULL,
-    "professionalId" UUID NOT NULL,
-    "demandId" UUID NOT NULL,
-
-    CONSTRAINT "budgets_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "comments" (
-    "id" UUID NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-    "comment" TEXT NOT NULL,
-    "visible" BOOLEAN NOT NULL DEFAULT true,
-    "parentCommentId" UUID,
-    "demandId" UUID NOT NULL,
-    "ownerCommentId" UUID NOT NULL,
-
-    CONSTRAINT "comments_pkey" PRIMARY KEY ("id")
-);
-
 -- CreateIndex
 CREATE UNIQUE INDEX "tenants_id_key" ON "tenants"("id");
 
@@ -142,21 +92,6 @@ CREATE UNIQUE INDEX "adresses_id_key" ON "adresses"("id");
 -- CreateIndex
 CREATE UNIQUE INDEX "contacts_id_key" ON "contacts"("id");
 
--- CreateIndex
-CREATE UNIQUE INDEX "demands_id_key" ON "demands"("id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "demands_name_key" ON "demands"("name");
-
--- CreateIndex
-CREATE UNIQUE INDEX "budgets_id_key" ON "budgets"("id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "comments_id_key" ON "comments"("id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "comments_parentCommentId_key" ON "comments"("parentCommentId");
-
 -- AddForeignKey
 ALTER TABLE "users" ADD CONSTRAINT "users_tenantId_fkey" FOREIGN KEY ("tenantId") REFERENCES "tenants"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -168,24 +103,3 @@ ALTER TABLE "adresses" ADD CONSTRAINT "adresses_dataBasicUsersId_fkey" FOREIGN K
 
 -- AddForeignKey
 ALTER TABLE "contacts" ADD CONSTRAINT "contacts_dataBasicUsersId_fkey" FOREIGN KEY ("dataBasicUsersId") REFERENCES "data-basic-users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "demands" ADD CONSTRAINT "demands_addressId_fkey" FOREIGN KEY ("addressId") REFERENCES "adresses"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "demands" ADD CONSTRAINT "demands_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "budgets" ADD CONSTRAINT "budgets_professionalId_fkey" FOREIGN KEY ("professionalId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "budgets" ADD CONSTRAINT "budgets_demandId_fkey" FOREIGN KEY ("demandId") REFERENCES "demands"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "comments" ADD CONSTRAINT "comments_parentCommentId_fkey" FOREIGN KEY ("parentCommentId") REFERENCES "comments"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "comments" ADD CONSTRAINT "comments_demandId_fkey" FOREIGN KEY ("demandId") REFERENCES "demands"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "comments" ADD CONSTRAINT "comments_ownerCommentId_fkey" FOREIGN KEY ("ownerCommentId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
