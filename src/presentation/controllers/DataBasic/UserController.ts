@@ -3,7 +3,7 @@ import { UserDtoCreate } from '../../../domain/dtos/DataBasic/User/UserDtoCreate
 import { IUserService } from '../../../domain/interfaces/service/DataBasic/IUserService';
 import { Logger } from '../../../infrastructure/utils/log/logger';
 import { HttpStatusCode } from '../../../infrastructure/utils/constants/httpStatusCode';
-import { GeneralResponse } from '../../../domain/interfaces/service/generalResponse';
+import { GeneralResponse } from '../../../infrastructure/utils/generalResponse';
 
 class UserController {
     private readonly _service: IUserService;

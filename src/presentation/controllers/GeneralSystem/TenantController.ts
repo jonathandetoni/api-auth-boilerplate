@@ -3,7 +3,7 @@ import { Logger } from '../../../infrastructure/utils/log/logger';
 import { ITenantService } from '../../../domain/interfaces/service/GeneralSystem/ITenantService';
 import { TenantDtoCreate } from '../../../domain/dtos/GeneralSystem/Tenant/TenantDtoCreate';
 import { HttpStatusCode } from '../../../infrastructure/utils/constants/httpStatusCode';
-import { GeneralResponse } from '../../../domain/interfaces/service/generalResponse';
+import { GeneralResponse } from '../../../infrastructure/utils/generalResponse';
 
 class TenantController {
     private readonly _service: ITenantService;

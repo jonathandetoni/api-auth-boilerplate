@@ -5,8 +5,8 @@ import { UserDtoList } from '../../dtos/DataBasic/User/UserDtoList';
 import { UserDtoCreate } from '../../dtos/DataBasic/User/UserDtoCreate';
 import { UserDtoCreateResult } from '../../dtos/DataBasic/User/result/UserDtoCreateResult';
 import { hashPassword } from '../../../infrastructure/utils/middleware/authHelper';
-import { GeneralResponse } from '../../interfaces/service/generalResponse';
 import { HttpStatusCode } from '../../../infrastructure/utils/constants/httpStatusCode';
+import { GeneralResponse } from '../../../infrastructure/utils/generalResponse';
 
 class UserRepository implements IUserRepository {
     async create(entity: UserDtoCreate): Promise<GeneralResponse> {

@@ -3,7 +3,7 @@ import { IAuthService } from '../../../domain/interfaces/service/GeneralSystem/I
 import { Logger } from '../../../infrastructure/utils/log/logger';
 import { AuthDto } from '../../../domain/dtos/GeneralSystem/Auth/AuthDto';
 import { HttpStatusCode } from '../../../infrastructure/utils/constants/httpStatusCode';
-import { GeneralResponse } from '../../../domain/interfaces/service/generalResponse';
+import { GeneralResponse } from '../../../infrastructure/utils/generalResponse';
 
 class AuthController {
     private readonly _service: IAuthService;

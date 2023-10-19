@@ -26,5 +26,4 @@ export class UserModel {
         this.cpf = cpf
         this.dataBasicUser = dataBasicUser
     } 
-
 }

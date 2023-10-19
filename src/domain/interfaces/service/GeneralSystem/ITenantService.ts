@@ -1,5 +1,5 @@
+import { GeneralResponse } from "../../../../infrastructure/utils/generalResponse";
 import { TenantDtoCreate } from "../../../dtos/GeneralSystem/Tenant/TenantDtoCreate";
-import { GeneralResponse } from "../generalResponse";
 
 export interface ITenantService {
     create(entity: TenantDtoCreate) : Promise<GeneralResponse>;

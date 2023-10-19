@@ -1,10 +1,7 @@
 import { TenantDtoCreate } from "../../domain/dtos/GeneralSystem/Tenant/TenantDtoCreate";
-import { TenantDtoList } from "../../domain/dtos/GeneralSystem/Tenant/TenantDtoList";
-import { TenantDtoCreateResult } from "../../domain/dtos/GeneralSystem/Tenant/result/TenantDtoCreateResult";
 import { ITenantRepository } from "../../domain/interfaces/repository/GeneralSystem/ITenantRepository";
 import { ITenantService } from "../../domain/interfaces/service/GeneralSystem/ITenantService";
-import { GeneralResponse } from "../../domain/interfaces/service/generalResponse";
-import { HttpStatusCode } from "../../infrastructure/utils/constants/httpStatusCode";
+import { GeneralResponse } from "../../infrastructure/utils/generalResponse";
 
 export interface ITenantResult {
   tenant: {

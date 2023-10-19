@@ -4,8 +4,8 @@ import { ITenantRepository } from '../../interfaces/repository/GeneralSystem/ITe
 import { TenantDtoCreate } from '../../dtos/GeneralSystem/Tenant/TenantDtoCreate';
 import { TenantDtoList } from '../../dtos/GeneralSystem/Tenant/TenantDtoList';
 import { TenantDtoCreateResult } from '../../dtos/GeneralSystem/Tenant/result/TenantDtoCreateResult';
-import { GeneralResponse } from '../../interfaces/service/generalResponse';
 import { HttpStatusCode } from '../../../infrastructure/utils/constants/httpStatusCode';
+import { GeneralResponse } from '../../../infrastructure/utils/generalResponse';
 
 class TenantRepository implements ITenantRepository {
     async create(entity: TenantDtoCreate): Promise<GeneralResponse> {

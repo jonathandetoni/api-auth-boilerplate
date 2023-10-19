@@ -1,5 +1,5 @@
+import { GeneralResponse } from "../../../../infrastructure/utils/generalResponse";
 import { UserDtoCreate } from "../../../dtos/DataBasic/User/UserDtoCreate";
-import { GeneralResponse } from "../../service/generalResponse";
 
 export interface IUserRepository {
     create(entity: UserDtoCreate ) : Promise<GeneralResponse>;

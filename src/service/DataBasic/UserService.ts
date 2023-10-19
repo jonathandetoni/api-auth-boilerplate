@@ -2,8 +2,8 @@ import { UserDtoCreate } from "../../domain/dtos/DataBasic/User/UserDtoCreate";
 import { TenantDtoList } from "../../domain/dtos/GeneralSystem/Tenant/TenantDtoList";
 import { IUserRepository } from "../../domain/interfaces/repository/DataBasic/IUserRepository";
 import { IUserService } from "../../domain/interfaces/service/DataBasic/IUserService";
-import { GeneralResponse } from "../../domain/interfaces/service/generalResponse";
 import { TypeUser } from "../../infrastructure/utils/constants/typesUser";
+import { GeneralResponse } from "../../infrastructure/utils/generalResponse";
 import { jwtDecode } from "../../infrastructure/utils/middleware/authHelper";
 
 export interface IUserResult {

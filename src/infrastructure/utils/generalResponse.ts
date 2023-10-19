@@ -1,4 +1,4 @@
-import { LogLevelEnum } from "../../../infrastructure/utils/log/logger";
+import { LogLevelEnum } from './log/logger';
 
 export interface GeneralResponse {
   data?: any;
@@ -14,7 +14,7 @@ interface error {
 }
 
 export interface errorDetails {
-  errorDetails: string;
+  errorDetails: string | object;
   label?: string;
   typeError?: LogLevelEnum;
 }
