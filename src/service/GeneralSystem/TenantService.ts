@@ -13,15 +13,19 @@ export interface ITenantResult {
 
 class TenantService implements ITenantService {
   private readonly _tenantRepository: ITenantRepository;
+  
   constructor(tenantRespository: ITenantRepository) {
     this._tenantRepository = tenantRespository;
   }
+
   async create(entity: TenantDtoCreate): Promise<GeneralResponse> {
     return await this._tenantRepository.create(entity);
   }
+
   async read(id: string): Promise<GeneralResponse> {
     return await this._tenantRepository.read(id);
   }
+
   async readByName(name: string): Promise<GeneralResponse> {
     return await this._tenantRepository.readByName(name);
   }

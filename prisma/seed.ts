@@ -35,11 +35,6 @@ async function main() {
           tenantId: tenant.id,
           typeUser: 'ADMINISTRATOR',
           role: 'Admin:Geral',
-          dataBasicUser: {
-            create: {
-              fullname: 'User Default'
-            }
-          }
         },
         update: {
           email: 'user@newproject.com',
@@ -50,8 +45,39 @@ async function main() {
           role: 'Admin:Geral'
         }
       })
-    
+      
       console.log('User criado: ', user)
+
+      const dataBasic = await prisma.dataBasicUsers.upsert({
+        where: {
+          id: '2c494e19-e412-474a-8869-c2d5c7634094'
+        },
+        create: {
+          fullname: 'Usuário Teste',
+          userId: user.id
+        },
+        update: {
+          fullname: 'Usuário Teste',
+          userId: user.id
+        }
+      })
+      
+      console.log('DataBasic criado: ', dataBasic)
+        
+      const address = await prisma.adresses.upsert({
+        where: {
+          id: '2c494e19-e412-474a-8869-c2d5c7634094'
+        },
+        create: {
+          dataBasicUsersId: dataBasic.id
+        },
+        update: {
+          dataBasicUsersId: dataBasic.id
+        },
+
+      })
+
+      console.log('Address criado: ', address)
       break
     case 'production':
       /** data for your test environment */

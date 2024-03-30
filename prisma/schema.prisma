@@ -13,6 +13,8 @@ model Tenants {
   id String @id @default(uuid()) @db.Uuid @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+  deleted Boolean @db.Boolean @default(false)
   
   name String @db.VarChar(255) @unique
   description String @db.VarChar(255)
@@ -26,6 +28,8 @@ model Users {
   id String @id @default(uuid()) @db.Uuid @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+  deleted Boolean @db.Boolean @default(false)
   
   email String @db.VarChar(255) @unique
   password String @db.VarChar(255)
@@ -37,7 +41,7 @@ model Users {
   tenantId String @db.Uuid
 
   dataBasicUser DataBasicUsers?
-  
+
   @@map("users")
 }
 
@@ -45,6 +49,8 @@ model DataBasicUsers {
   id String @id @default(uuid()) @db.Uuid @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+  deleted Boolean @db.Boolean @default(false)
   
   fullname String @db.VarChar(255)
   nickname String? @db.VarChar(255)
@@ -63,6 +69,8 @@ model Adresses {
   id String @id @default(uuid()) @db.Uuid @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+  deleted Boolean @db.Boolean @default(false)
   
   dataBasicUsers DataBasicUsers @relation(fields: [dataBasicUsersId], references: [id])
   dataBasicUsersId String @db.Uuid
@@ -74,6 +82,8 @@ model Contacts {
   id String @id @default(uuid()) @db.Uuid @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+  deleted Boolean @db.Boolean @default(false)
 
   contactType ContactsTypes
   value String @db.VarChar(255)

@@ -5,6 +5,7 @@ import { IAuthService } from "../../domain/interfaces/service/GeneralSystem/IAut
 import { HttpStatusCode } from "../../infrastructure/utils/constants/httpStatusCode";
 import { TypeUser } from "../../infrastructure/utils/constants/typesUser";
 import { GeneralResponse } from "../../infrastructure/utils/generalResponse";
+import { LogLevelEnum } from "../../infrastructure/utils/log/logger";
 import { comparePasswords, jwtSign } from "../../infrastructure/utils/middleware/authHelper";
 
 export interface IAuthResult {
@@ -33,11 +34,16 @@ class AuthService implements IAuthService {
     if (!resulRead || !resulRead.data.password || !await comparePasswords(entity.password, resulRead.data.password)) {
       return {
         success: false,
-        statusCode: HttpStatusCode.BAD_REQUEST,
         error: {
-          message: 'Email or password ivalid!'
-        }
-      };
+            message: "E-mail ou senha incorretos!",
+            errorMessage: "E-mail ou senha incorretos!",
+            details: [{
+                errorDetails: "E-mail ou senha incorretos!",
+                typeError: LogLevelEnum.INFO    
+            }]
+        },
+        statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR
+      }
     }
 
     const data : IAuthResult = {

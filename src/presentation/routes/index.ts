@@ -5,6 +5,7 @@ import { authRouter } from './GeneralSystem/auth.routes';
 import { tenantRouter } from './GeneralSystem/tenant.routes';
 
 import { userRouter } from './DataBasic/user.routes';
+
 const router = Router();
 
 router.use('/v1', authRouter);

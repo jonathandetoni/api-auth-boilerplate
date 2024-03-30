@@ -1,9 +1,10 @@
 import bcrypt from 'bcrypt';
 import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-import { CustomError } from 'express-handler-errors';
 import { getEnv } from '../../config/env'
 import { UserDtoList } from '../../../domain/dtos/DataBasic/User/UserDtoList';
+import { HttpStatusCode } from '../constants/httpStatusCode';
+import { LogLevelEnum } from '../log/logger';
 
 const salt = bcrypt.genSaltSync(10);
 const SECRET_KEY: Secret = getEnv().JWT_SECRET as Secret;
@@ -39,11 +40,18 @@ export const validationToken = async (request: Request, response: Response, next
 
     if (!token) {
       return next(
-        new CustomError({
-          code: 'UNAUTHORIZED',
-          message: 'Token não enviado',
-          status: 401,
-        })
+        {
+            success: false,
+            error: {
+                message: "Erro inesperado ao fazer validação do token!",
+                errorMessage: "Erro inesperado ao fazer validação do token!",
+                details: [{
+                    errorDetails: "Erro inesperado ao fazer validação do token!",
+                    typeError: LogLevelEnum.ERROR    
+                }]
+            },
+            statusCode: HttpStatusCode.BAD_REQUEST
+        }
       );
     }
 
@@ -52,6 +60,17 @@ export const validationToken = async (request: Request, response: Response, next
 
     next();
   } catch (err) {
-    response.status(401).send('Please authenticate!');
+    response.status(HttpStatusCode.UNAUTHORIZED).send({
+      success: false,
+      error: {
+          message: "Não autorizado!",
+          errorMessage: "Não autorizado!",
+          details: [{
+              errorDetails: "Não autorizado!",
+              typeError: LogLevelEnum.INFO    
+          }]
+      },
+      statusCode: HttpStatusCode.BAD_REQUEST
+  });
   }
 };
