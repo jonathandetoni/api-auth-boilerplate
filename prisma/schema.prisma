@@ -41,9 +41,6 @@ model Users {
   tenantId String @db.Uuid
 
   dataBasicUser DataBasicUsers?
-  demands Demands[]
-  budgets Budgets[]
-  comments Comments[]
 
   @@map("users")
 }
@@ -74,8 +71,6 @@ model Adresses {
   updatedAt DateTime @updatedAt
   deletedAt DateTime?
   deleted Boolean @db.Boolean @default(false)
-
-  demands Demands[]
   
   dataBasicUsers DataBasicUsers @relation(fields: [dataBasicUsersId], references: [id])
   dataBasicUsersId String @db.Uuid
@@ -97,119 +92,6 @@ model Contacts {
   dataBasicUsersId String @db.Uuid
 
   @@map("contacts")
-}
-
-model Demands {
-  id String @id @default(uuid()) @db.Uuid @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  deletedAt DateTime?
-  deleted Boolean @db.Boolean @default(false)
-
-  name String @db.VarChar(255)
-  description String @db.VarChar(255)
-  status StatusDemands @default(NEW)
-  category String @db.VarChar(255)
-  typeService String @db.VarChar(255)
-
-  comments Comments[]
-  budgets Budgets[]
-
-  address Adresses @relation(fields: [addressId], references: [id])
-  addressId String @db.Uuid
-
-  owner Users @relation(fields: [ownerId], references: [id])
-  ownerId String @db.Uuid
-
-  @@map("demands")
-}
-
-model Budgets {
-  id String @id @default(uuid()) @db.Uuid @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  deletedAt DateTime?
-  deleted Boolean @db.Boolean @default(false)
-
-  description String @db.Text
-  status StatusBudgets @default(SENT)
-  value String @db.VarChar(255)
-
-  budgetItems BudgetItems[]
-
-  owner Users @relation(fields: [ownerId], references: [id])
-  ownerId String @db.Uuid
-
-  demand Demands @relation(fields: [demandId], references: [id])
-  demandId String @db.Uuid 
-
-  @@map("budgets")
-}
-
-model BudgetItems {
-  id String @id @default(uuid()) @db.Uuid @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  deletedAt DateTime?
-  deleted Boolean @db.Boolean @default(false)
-
-  name String @db.VarChar(255)
-  description String @db.Text
-  value String @db.VarChar(255)
-  status StatusBudgetItems @default(SENT)
-
-  budget Budgets @relation(fields: [budgetId], references: [id])
-  budgetId String @db.Uuid 
-
-  @@map("budgets-items")
-}
-
-model Comments {
-  id String @id @default(uuid()) @db.Uuid @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  deletedAt DateTime?
-  deleted Boolean @db.Boolean @default(false)
-
-  comment String @db.Text()
-  visible Boolean @db.Boolean() @default(true) 
-
-  parentCommentId String? @db.Uuid @unique
-  parentComment Comments? @relation("parentCommentId", fields: [parentCommentId], references: [id])
-  parentCommentPredecessor Comments? @relation("parentCommentId")
-
-  demand Demands @relation(fields: [demandId], references: [id])
-  demandId String @db.Uuid 
-
-  ownerComment Users @relation(fields: [ownerCommentId], references: [id])
-  ownerCommentId String @db.Uuid 
-  
-  @@map("comments")
-}
-
-enum StatusDemands { 
-  NEW 
-  OPEN_BUDGETS
-  RECEIVED_BUDGETS
-  CHOSEN_BUDGET
-  IN_PROGRESS
-  PAUSED
-  CANCELED
-  FINISHED
-}
-
-enum StatusBudgets {
-  SENT
-  OPEN
-  REFUSED
-  ACCEPTED
-}
-
-enum StatusBudgetItems {
-  SENT
-  OPEN
-  REFUSED
-  ACCEPTED
 }
 
 enum TypeUsers {

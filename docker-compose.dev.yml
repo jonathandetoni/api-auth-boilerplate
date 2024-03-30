@@ -19,7 +19,7 @@ services:
     container_name: newprojectx-core-api
     build:
       context: .
-      dockerfile: Dockerfile.local
+      dockerfile: Dockerfile.dev
     ports:
       - "5001:5001"
     volumes:

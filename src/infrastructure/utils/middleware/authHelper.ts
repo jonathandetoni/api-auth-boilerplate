@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-import { CustomError } from 'express-handler-errors';
 import { getEnv } from '../../config/env'
 import { UserDtoList } from '../../../domain/dtos/DataBasic/User/UserDtoList';
 import { HttpStatusCode } from '../constants/httpStatusCode';
